@@ -1,7 +1,6 @@
 package cn.godk.sso.manager.service;
 
 
-import cn.godk.sso.Service;
 import cn.godk.sso.cache.CacheManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,27 +21,13 @@ import javax.servlet.ServletResponse;
 @Setter
 @Getter
 public abstract class AbstractServiceManager implements ServiceManager {
-
-    /**
-     * request
-      */
-    private ServletRequest request;
-    /**
-     * response
-     */
-    private ServletResponse response;
-
     /**
      *   缓存接口
      */
     private CacheManager<Service> cacheManager;
 
 
-    public ServletRequest getRequest() {
-        return request;
-    }
-
-    public void setRequest(ServletRequest request) {
-        this.request = request;
+    public AbstractServiceManager(CacheManager<Service> cacheManager) {
+        this.cacheManager = cacheManager;
     }
 }

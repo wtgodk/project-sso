@@ -1,6 +1,6 @@
 package cn.godk.sso.manager.service;
 
-import cn.godk.sso.Service;
+import cn.godk.sso.bean.Permit;
 
 /**
  *
@@ -15,7 +15,7 @@ public interface ServiceManager {
      *   获取 当前service 是否存在
      * @return
      */
-    Service getService();
+    Service getService(Permit permit);
 
     /**
      * 移除 指定service
@@ -25,20 +25,27 @@ public interface ServiceManager {
 
     /**
      *  清除指定token，所有使用该token的服务下线
-     * @param token  token
+     * @param token  通行证
      */
     void delByToken(String token);
 
     /**
-     *  清除指定token，所有使用该token的服务下线
+     *   移除指定用户的service
      */
-    void delService();
+    void delByUsername(String userKey);
 
     /**
-     *   更新 service 在线时间
+     *  清除指定通行证，所有使用该通行证的服务下线
+     */
+    void delService(Permit permit);
+
+    /**
+     * 更新 service 在线时间
+     * @param permit 通行证
+     * @param appId 服务ID
      * @return
      */
-    Service updateService();
+    Service updateService(Permit permit,String appId);
 
 
 

@@ -27,7 +27,7 @@ public interface CacheManager<T> {
      *   如果存在则删除
      * @param key
      */
-    void delIfExist(String key);
+    T delIfExist(String key);
 
     /**
      *  更新 缓存

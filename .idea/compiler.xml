@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="sso-server" />
         <module name="sso-core" />
+        <module name="sso-common" />
         <module name="sso-client" />
       </profile>
     </annotationProcessing>
