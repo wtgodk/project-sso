@@ -45,7 +45,7 @@ public class LoginController {
         log.info("[{}] load page : login ,param [backUrl]->[{}]",new Date(),backUrl);
         // 校验 是否已经登陆了
         String token = CookieUtils.get(request, Constant.COOKIE_NAME);
-       Cookie cookie = (Cookie)SsoLoginHelper.check(token,appId);
+       Permit cookie =  SsoLoginHelper.check(token,appId);
       if(cookie!=null){
           // 已经登陆了直接跳转到指定页面
           StringBuilder rollback = new StringBuilder();
@@ -63,10 +63,9 @@ public class LoginController {
         }
           return  "redirect:" +rollback.toString() ;
       }
-
         model.addAttribute("backUrl",backUrl);
         model.addAttribute("appId",appId);
-        return "/login";
+        return "/login.html?backUrl=" + backUrl +"&appId="+ appId;
     }
 
     /**
@@ -121,11 +120,12 @@ public class LoginController {
                          @RequestParam(name = "backUrl")String backUrl,
                          HttpServletRequest request,
                          HttpServletResponse response){
-        log.info("[{}] load page : logout ,param [appId]->[{}]",new Date(),appId);
+        log.info("[{}] load page : logout ,param [appId,backUrl]->[{},{}]",new Date(),appId,backUrl);
         String cookie = CookieUtils.get(request, Constant.COOKIE_NAME);
         SsoLoginHelper.logout(appId, cookie);
         CookieUtils.destroy(request,response,Constant.COOKIE_NAME);
-        return "redirect:/login.html" + backUrl;
+
+        return  "redirect:/login.html?backUrl="+ backUrl +"&appId="+ appId;
     }
 
 

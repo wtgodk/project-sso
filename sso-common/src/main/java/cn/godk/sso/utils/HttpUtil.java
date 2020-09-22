@@ -30,12 +30,12 @@ import java.io.IOException;
 public class HttpUtil {
 
 
-    public static <T> T doPost(String url, JSONObject json,TypeReference<T> type) {
+    public static <T> T doPost(String url, Object param,TypeReference<T> type) {
         CloseableHttpClient httpclient = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(url);
         CloseableHttpResponse response =null;
         try {
-            StringEntity s = new StringEntity(json.toString());
+            StringEntity s = new StringEntity(JSON.toJSONString(param));
             s.setContentEncoding("UTF-8");
             //发送json数据需要设置contentType
             s.setContentType("application/json");

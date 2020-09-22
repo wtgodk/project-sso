@@ -1,9 +1,12 @@
 package cn.godk.sso.conf;
 
 import cn.godk.sso.SsoLoginHelper;
+import cn.godk.sso.bean.Permit;
 import cn.godk.sso.cache.CacheManager;
 import cn.godk.sso.cache.guava.Guava;
 import cn.godk.sso.cache.guava.GuavaCacheManager;
+import cn.godk.sso.handler.DefaultHandler;
+import cn.godk.sso.handler.rule.DefaultRule;
 import cn.godk.sso.manager.DefaultSecurityManager;
 import cn.godk.sso.manager.SecurityManager;
 import cn.godk.sso.manager.service.DefaultServiceManager;
@@ -12,6 +15,8 @@ import cn.godk.sso.manager.service.ServiceManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  *
@@ -43,7 +48,14 @@ public class SystemInit {
     public CacheManager<Service> serviceCacheManager(){
         return new GuavaCacheManager<>(Guava.SERVICE);
     }
-
+    /**
+     *  service cache manager
+     * @return
+     */
+    @Bean
+    public CacheManager<Permit> tokenCacheManager(){
+        return new GuavaCacheManager<>(Guava.TOKEN);
+    }
 
     /**
      *  security manager
@@ -51,8 +63,12 @@ public class SystemInit {
      * @return
      */
     @Bean
-    public SecurityManager securityManager(ServiceManager serviceManager){
+    public SecurityManager securityManager(ServiceManager serviceManager, CacheManager<Permit> tokenCacheManager){
         DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager(serviceManager);
+        DefaultHandler defaultHandler = new DefaultHandler();
+        defaultHandler.setRule(new DefaultRule());
+        defaultHandler.setCacheManager(tokenCacheManager);
+        defaultSecurityManager.setVerificationHandler(defaultHandler);
         SsoLoginHelper.setSecurityManager(defaultSecurityManager);
         return defaultSecurityManager;
     }

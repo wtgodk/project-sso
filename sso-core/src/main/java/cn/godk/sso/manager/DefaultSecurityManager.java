@@ -12,6 +12,7 @@ import cn.godk.sso.bean.Permit;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
@@ -71,14 +72,17 @@ public class DefaultSecurityManager implements SecurityManager {
     }
 
     @Override
-    public void logout(String appId, String token) {
+    public void logout( String token,String appId) {
         Permit permit = verificationHandler.del(token);
         serviceManager.delByToken(token);
         //TODO  申请退出 appId
     }
 
     @Override
-    public Permit check(String appId, String token) {
+    public Permit check(String token,String appId) {
+        if(StringUtils.isBlank(token)){
+            return null;
+        }
         Permit permit = verificationHandler.get(token);
         if(permit==null){
             // 不在线

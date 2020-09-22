@@ -29,6 +29,8 @@ public class Permit {
         token;
     }
 
+    public Permit() {
+    }
 
     public Permit(String key) {
         this.key = key;

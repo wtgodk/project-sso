@@ -13,6 +13,14 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Result<T>  {
+    public Result() {
+    }
+
+    public Result(T data) {
+        this.code = 0;
+        this.data = data;
+        this.message = "SUCCESS";
+    }
 
     /**
      *  返回结果  -0 请求成功

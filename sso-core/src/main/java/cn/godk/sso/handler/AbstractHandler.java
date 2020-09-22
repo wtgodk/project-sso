@@ -35,7 +35,7 @@ public abstract  class AbstractHandler implements VerificationHandler {
 
     public AbstractHandler(CacheManager<Permit> cacheManager, Rule rule) {
         this(rule);
-        this.rule = rule;
+        this.cacheManager = cacheManager;
     }
     public AbstractHandler(CacheManager<Permit> cacheManager) {
         this();
@@ -63,7 +63,6 @@ public abstract  class AbstractHandler implements VerificationHandler {
         token.setUsername(username);
         token.setType(type);
         getCacheManager().create(token.getKey(),token, timeout);
-
         return  token;
     }
 

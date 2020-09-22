@@ -57,7 +57,7 @@ public abstract  class AbstractUsernamePasswordRealm implements Realm{
                     throw new DenyLoginFailException("The user does not have permission to log in to the system");
                 }
             }
-        }else{
+        }else if(loginUser==null){
             throw new AccountErrorLoginFailException("Account password does not match");
         }
 

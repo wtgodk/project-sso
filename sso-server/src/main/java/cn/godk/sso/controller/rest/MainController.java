@@ -1,12 +1,12 @@
 package cn.godk.sso.controller.rest;
 
+import cn.godk.sso.SsoLoginHelper;
+import cn.godk.sso.bean.result.Result;
 import cn.godk.sso.manager.service.Service;
 import cn.godk.sso.manager.service.ServiceManager;
 import cn.godk.sso.bean.Permit;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -42,29 +42,14 @@ public class MainController {
 
     /**
      *  登陆状态校验
-     * @param appId 系统唯一ID  TRUE
-     * @param token 登录状态信息token TRUE
+     * @param permit token信息 {@link Permit}
      * @return
      */
     @RequestMapping(value = "/check",method = RequestMethod.POST)
-    public String check(String appId, String token){
-        log.info("[{}] <API> login status check ,param [appId,token]->[{},{}]",new Date(),appId,token);
-        Service service =serviceManager.getService(new Permit(token));
-        if(service==null){
-            //token 失效
-            return "/token";
-        }
-        String serverId = service.getAppId();
-        if(serverId.equals(appId)){
-            // 同一个服务
-        }else{
-            // 新增服务
-        //    serviceManager.updateService()
-
-
-        }
-
-        return "/token";
+    public Result<Permit> check(@RequestBody Permit permit){
+       log.info("[{}] <API> login status check ,param [permit]->[{}]",new Date(),permit.toString());
+        Permit check = SsoLoginHelper.check(permit.getKey(), permit.getAppId());
+        return new Result<>(check);
     }
 
 
