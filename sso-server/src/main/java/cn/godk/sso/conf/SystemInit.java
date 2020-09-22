@@ -13,15 +13,11 @@ import cn.godk.sso.manager.service.DefaultServiceManager;
 import cn.godk.sso.manager.service.Service;
 import cn.godk.sso.manager.service.ServiceManager;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-
 /**
+ * 系统初始化
  *
- *
- *  系统初始化
  * @author wt
  * @program project-sso
  * @create 2020-09-18  15:11
@@ -31,39 +27,44 @@ public class SystemInit {
 
 
     /**
-     *   service manager
+     * service manager
+     *
      * @param cacheManager
      * @return
      */
     @Bean
-    public ServiceManager serviceManager(CacheManager<Service> cacheManager){
-       return new DefaultServiceManager(cacheManager);
+    public ServiceManager serviceManager(CacheManager<Service> cacheManager) {
+        return new DefaultServiceManager(cacheManager);
     }
 
     /**
-     *  service cache manager
+     * service cache manager
+     *
      * @return
      */
     @Bean
-    public CacheManager<Service> serviceCacheManager(){
+    public CacheManager<Service> serviceCacheManager() {
         return new GuavaCacheManager<>(Guava.SERVICE);
     }
+
     /**
-     *  service cache manager
+     * service cache manager
+     *
      * @return
      */
     @Bean
-    public CacheManager<Permit> tokenCacheManager(){
+    public CacheManager<Permit> tokenCacheManager() {
         return new GuavaCacheManager<>(Guava.TOKEN);
     }
 
     /**
-     *  security manager
+     * security manager
+     *
      * @param serviceManager
      * @return
      */
     @Bean
-    public SecurityManager securityManager(ServiceManager serviceManager, CacheManager<Permit> tokenCacheManager){
+    public SecurityManager securityManager(ServiceManager serviceManager, CacheManager<Permit> tokenCacheManager) {
         DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager(serviceManager);
         DefaultHandler defaultHandler = new DefaultHandler();
         defaultHandler.setRule(new DefaultRule());
@@ -72,8 +73,6 @@ public class SystemInit {
         SsoLoginHelper.setSecurityManager(defaultSecurityManager);
         return defaultSecurityManager;
     }
-
-
 
 
 }
