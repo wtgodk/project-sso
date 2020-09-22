@@ -50,67 +50,23 @@ public class CookieSsoFilter extends AbstractSsoFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse res = (HttpServletResponse)response;
-        String servletPath = req.getServletPath();
-        Result<Permit> result = null;
+        boolean redirect ;
         if(isCrossDomain()){
-            String token = (String) req.getSession().getAttribute(key);
-            if(token!=null){
-                Permit cookiePermit = new Permit(token);
-                cookiePermit.setAppId(getAppId());
-                result = check(cookiePermit);
-            }else{
-                // 当前系统未登录
-                String serviceTicket = req.getParameter("service_ticket");
-                if(StringUtils.isNotBlank(serviceTicket)){
-                    Permit cookiePermit = new Permit(serviceTicket);
-                    cookiePermit.setAppId(getAppId());
-                    // TODO  后续改成 单独校验值 类似 cas st
-                    result = check(cookiePermit);
-                }
-            }
-            if(result==null || result.getData()==null){
-                // 未登录
-                redirect(res,servletPath);
-                return;
-            }
-            Permit data = result.getData();
-                // 已登录
-                req.getSession().setAttribute(key,result.getData().getKey());
-                req.getSession().setAttribute("ssoUserName",result.getData().getUsername());
+            redirect=   crossDomain(req,res);
         }else{
-            String cookie = CookieUtils.get(req, key);
-            if(cookie == null){
-                // 未登录 ，跳转到登录页面
-                redirect(res,servletPath);
-                return;
-            }else{
-                // 验证 token 是否有效  appId,token
-                Permit cookiePermit = new Permit(cookie);
-                cookiePermit.setAppId(getAppId());
-                 result = HttpUtil.doPost(getSsoServer() + "/check", cookiePermit, new TypeReference<Result<Permit>>() {
-                });
-                if(result==null || result.getCode()==1){
-                    // 未登录或登陆已经失效
-                    redirect(res,servletPath);
-                    //  chain.doFilter(req,res);
-                    return ;
-                }
-                // TODO  code == 其他
-                int code = result.getCode();
-                // token 有效
-                Permit permit =  result.getData();
-                // 用户名
-                String username = permit.getUsername();
-                // session中存储 用户名
-                req.getSession().setAttribute("ssoUserName",username);
-            }
+            redirect =  sameDomain(req,res);
         }
-
-        chain.doFilter(req,res);
+        if(!redirect){
+            chain.doFilter(req,res);
+        }
     }
 
 
-
+    /**
+     *   重定向
+     * @param response
+     * @param rollback
+     */
     public void redirect(HttpServletResponse response, String rollback){
         try {
             response.sendRedirect(getSsoLoginUrl() +"?backUrl="+ EncodeUtils.encodeURL(getSsoClientUrl() + rollback) +"&appId="+getAppId());
@@ -122,9 +78,87 @@ public class CookieSsoFilter extends AbstractSsoFilter {
 
 
 
+    /**
+     *   客户端无法获取到 服务端 cookie时使用该方法。（跨域）
+     * @param req
+     * @param res
+     * @return 是否重定向
+     */
+    private  boolean crossDomain( HttpServletRequest req ,HttpServletResponse res){
+        Result<Permit> result = null;
+        String token = (String) req.getSession().getAttribute(key);
+        if(token!=null){
+            Permit cookiePermit = new Permit(token);
+            cookiePermit.setAppId(getAppId());
+            result = check(cookiePermit);
+        }else{
+            // 当前系统未登录
+            String serviceTicket = req.getParameter("service_ticket");
+            if(StringUtils.isNotBlank(serviceTicket)){
+                Permit cookiePermit = new Permit(serviceTicket);
+                cookiePermit.setAppId(getAppId());
+                // TODO  后续改成 单独校验值 类似 cas st
+                result = check(cookiePermit);
+            }
+        }
+        if(isRedirect(result, req, res)){
+            return true;
+        }
+        Permit data = result.getData();
+        // 已登录
+        req.getSession().setAttribute(key,data.getKey());
+        req.getSession().setAttribute("ssoUserName",data.getUsername());
+            return false;
+    }
 
 
-
+    /**
+     *   客户端可以获取到 服务端 cookie（同域名）
+     * @param req
+     * @param res
+     * @return 是否重定向
+     */
+    private boolean sameDomain( HttpServletRequest req ,HttpServletResponse res){
+        String servletPath = req.getServletPath();
+        String cookie = CookieUtils.get(req, key);
+        if(cookie == null){
+            // 未登录 ，跳转到登录页面
+            redirect(res,servletPath);
+            return true;
+        }else{
+            // 验证 token 是否有效  appId,token
+            Permit cookiePermit = new Permit(cookie);
+            cookiePermit.setAppId(getAppId());
+            Result<Permit> result = HttpUtil.doPost(getSsoServer() + "/check", cookiePermit, new TypeReference<Result<Permit>>() {
+            });
+            if(isRedirect(result,req,res)){
+                return true;
+            }
+            // TODO  code == 其他
+            // token 有效
+            assert result != null;
+            Permit permit =  result.getData();
+            // 用户名
+            String username = permit.getUsername();
+            // session中存储 用户名
+            req.getSession().setAttribute("ssoUserName",username);
+            return false;
+        }
+    }
+    /**
+     * 是否重定向
+     * @param result  校验结果
+     * @param req    request
+     * @param res   response
+     * @return
+     */
+    private boolean isRedirect(Result<Permit> result,HttpServletRequest req ,HttpServletResponse res){
+        if(result==null || result.getData()==null){
+            redirect(res,req.getServletPath());
+            return true;
+        }
+        return false;
+    }
 
 
 }
