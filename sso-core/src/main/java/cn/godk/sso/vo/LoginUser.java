@@ -7,8 +7,8 @@ import lombok.Setter;
 import java.util.Map;
 
 /**
+ * 用户信息封装
  *
- *  用户信息封装
  * @author wt
  * @program project-sso
  * @create 2020-09-17  13:12
@@ -18,12 +18,12 @@ import java.util.Map;
 public class LoginUser {
 
     /**
-     *   用户名
+     * 用户名
      */
     private String username;
 
     /**
-     *   额外参数
+     * 额外参数
      */
-    private Map<String,Object> params = Maps.newHashMap();
+    private Map<String, Object> params = Maps.newHashMap();
 }

@@ -18,8 +18,8 @@ public class DefaultUsernamePasswordRealm extends AbstractUsernamePasswordRealm 
         LoginUser loginUser = new LoginUser();
         loginUser.setUsername("test");
         Map<String, Object> params = loginUser.getParams();
-        params.put("name","godk");
-        params.put("id",1);
+        params.put("name", "godk");
+        params.put("id", 1);
         return loginUser;
     }
 

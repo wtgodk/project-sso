@@ -14,29 +14,24 @@ import lombok.Setter;
 public class Service {
 
 
-
+    /**
+     * 服务ID
+     */
+    private String appId;
+    /**
+     * 服务登录类型
+     */
+    private Permit.Type type;
+    /**
+     * 用户 唯一 值。
+     */
+    private String username;
     public Service() {
     }
 
     public Service(String appId) {
         this.appId = appId;
     }
-
-    /**
-     *  服务ID
-     */
-    private String appId;
-    /**
-     *   服务登录类型
-     */
-    private Permit.Type type;
-
-    /**
-     *  用户 唯一 值。
-     */
-    private String username;
-
-
 
 
 }

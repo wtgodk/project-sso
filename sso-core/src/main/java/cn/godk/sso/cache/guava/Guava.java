@@ -9,12 +9,12 @@ package cn.godk.sso.cache.guava;
  */
 public enum Guava {
     /**
-     *   保存登录信息
+     * 保存登录信息
      */
     TOKEN,
 
     /**
-     *   服务 信息
+     * 服务 信息
      */
     SERVICE;
 

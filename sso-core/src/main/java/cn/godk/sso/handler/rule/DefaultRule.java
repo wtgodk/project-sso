@@ -1,14 +1,13 @@
 package cn.godk.sso.handler.rule;
 
 
-
 import cn.godk.sso.bean.Permit;
 
 import java.util.UUID;
 
 /**
+ * 默认创建方法
  *
- *  默认创建方法
  * @author wt
  * @program project-sso
  * @create 2020-09-14  11:06

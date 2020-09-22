@@ -4,8 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
+ * copy from arango db  url encode
  *
- *   copy from arango db  url encode
  * @author wt
  * @program project-sso
  * @create 2020-09-21  13:43

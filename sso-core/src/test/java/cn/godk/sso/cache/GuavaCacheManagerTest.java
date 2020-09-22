@@ -13,15 +13,15 @@ import org.junit.Test;
 public class GuavaCacheManagerTest {
 
     @Test
-    public void testGuava(){
+    public void testGuava() {
         GuavaCacheManager<String> guavaCacheManager = new GuavaCacheManager<>(Guava.TOKEN);
         String test = guavaCacheManager.get("test");
         Assert.assertNull(test);
         String s = guavaCacheManager.create("test", "value", 100);
-        Assert.assertEquals("value",s);
+        Assert.assertEquals("value", s);
 
         String test2 = guavaCacheManager.get("test");
-        Assert.assertEquals("value",test2);
+        Assert.assertEquals("value", test2);
 
     }
 

@@ -1,7 +1,7 @@
 package cn.godk.sso.manager.service;
 
-import cn.godk.sso.cache.CacheManager;
 import cn.godk.sso.bean.Permit;
+import cn.godk.sso.cache.CacheManager;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +19,9 @@ import java.util.Date;
 public class DefaultServiceManager extends AbstractServiceManager {
 
     /**
-     *   到期时间  默认 30M
+     * 到期时间  默认 30M
      */
-    private long expire = 1000 * 60 * 30 ;
+    private long expire = 1000 * 60 * 30;
 
     public DefaultServiceManager(CacheManager<Service> cacheManager) {
         super(cacheManager);
@@ -29,10 +29,10 @@ public class DefaultServiceManager extends AbstractServiceManager {
 
     @Override
     public Service getService(Permit permit) {
-        log.debug("[{}] get service by request",new Date());
+        log.debug("[{}] get service by request", new Date());
         String key = permit.getKey();
-        if(key==null){
-            log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]",new Date(),permit.toString());
+        if (key == null) {
+            log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]", new Date(), permit.toString());
         }
         return getCacheManager().get(key);
     }
@@ -50,43 +50,38 @@ public class DefaultServiceManager extends AbstractServiceManager {
     }
 
     @Override
-    public void delService(  Permit permit) {
+    public void delService(Permit permit) {
         String key = permit.getKey();
-        if(key==null){
-            log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]",new Date(),permit.toString());
+        if (key == null) {
+            log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]", new Date(), permit.toString());
         }
         delByToken(key);
     }
 
     @Override
-    public void delByToken( String token) {
-        log.info("[{}] del service by token , [token]-[{}]",new Date(),token);
+    public void delByToken(String token) {
+        log.info("[{}] del service by token , [token]-[{}]", new Date(), token);
         // 下线 登出
-        if(token==null){
-            log.debug("[{}] request token is empty ,can not find service , [token]->[{}]",new Date(),token);
+        if (token == null) {
+            log.debug("[{}] request token is empty ,can not find service , [token]->[{}]", new Date(), token);
         }
         getCacheManager().delIfExist(token);
     }
 
     @Override
-    public Service updateService( Permit permit,String appId) {
+    public Service updateService(Permit permit, String appId) {
         String key = permit.getKey();
-        if(key==null){
-            log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]",new Date(),permit.toString());
+        if (key == null) {
+            log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]", new Date(), permit.toString());
         }
         Service service = getService(permit);
-        if(service==null || !service.getAppId().equals(appId)){
+        if (service == null || !service.getAppId().equals(appId)) {
             // FIXME 需要验证 是否正确
             service = new Service(appId);
             service.setType(permit.getType());
         }
-        return  getCacheManager().create(key, service, expire);
+        return getCacheManager().create(key, service, expire);
     }
-
-
-
-
-
 
 
 }

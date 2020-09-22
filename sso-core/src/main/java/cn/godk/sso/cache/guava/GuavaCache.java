@@ -18,8 +18,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class GuavaCache {
 
-    private static GuavaCache instance;
     protected static Map<Guava, Cache> caches = null;
+    private static GuavaCache instance;
 
     private GuavaCache() {
     }
@@ -64,7 +64,7 @@ public class GuavaCache {
      * @return
      * @throws ExecutionException
      */
-    public synchronized <T> T get(Object key, Guava guavaKey, Class<T> clazz)   {
+    public synchronized <T> T get(Object key, Guava guavaKey, Class<T> clazz) {
         try {
             return getVal(key, guavaKey, clazz);
         } catch (Exception e) {

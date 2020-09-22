@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *  token handler
+ * token handler
  *
  * @author wt
  * @program project-sso
@@ -12,7 +12,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public abstract  class AbstractTokenHandler implements TokenHandler {
+public abstract class AbstractTokenHandler implements TokenHandler {
 
 
 //    private TokenRule tokenRule = new DefaultTokenRule();

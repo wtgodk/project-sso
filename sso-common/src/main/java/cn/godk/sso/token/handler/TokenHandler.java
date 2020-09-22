@@ -4,9 +4,9 @@ package cn.godk.sso.token.handler;
 import javax.servlet.ServletRequest;
 
 /**
+ * token 处理器
+ * 获取、生成 token
  *
- *  token 处理器
- *   获取、生成 token
  * @author wt
  * @program project-sso
  * @create 2020-09-14  10:28
@@ -14,9 +14,10 @@ import javax.servlet.ServletRequest;
 public interface TokenHandler {
 
     /**
-     *   获取Request中的 token
-     * @param tokenName  token key
-     * @param request Request
+     * 获取Request中的 token
+     *
+     * @param tokenName token key
+     * @param request   Request
      * @return
      */
 
@@ -28,7 +29,7 @@ public interface TokenHandler {
      * @param appId appid
      * @return
      */
-  //  Token create(String tokenName, String appId);
+    //  Token create(String tokenName, String appId);
 
 
 }

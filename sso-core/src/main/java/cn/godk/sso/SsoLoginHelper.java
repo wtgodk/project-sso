@@ -1,13 +1,11 @@
 package cn.godk.sso;
 
 
-import cn.godk.sso.manager.SecurityManager;
 import cn.godk.sso.bean.Permit;
+import cn.godk.sso.manager.SecurityManager;
 
 /**
- *
- *
- *    sso 登录 管理入口
+ * sso 登录 管理入口
  *
  * @author wt
  * @program project-sso
@@ -19,30 +17,33 @@ public class SsoLoginHelper {
     private static SecurityManager securityManager;
 
     /**
-     *   系统登录
-     * @param appId  服务 ID
-     * @param username  用户名
+     * 系统登录
+     *
+     * @param appId    服务 ID
+     * @param username 用户名
      * @param password 密码
      */
-    public static Permit login(String appId, String username, String password, Permit.Type type){
-        return securityManager.login(appId, username, password,type);
+    public static Permit login(String appId, String username, String password, Permit.Type type) {
+        return securityManager.login(appId, username, password, type);
     }
 
     /**
-     *  校验token是否有效
+     * 校验token是否有效
+     *
      * @param token
      */
-    public static Permit check(String token,String appId){
-        return  securityManager.check(token,appId);
+    public static Permit check(String token, String appId) {
+        return securityManager.check(token, appId);
     }
 
 
     /**
-     *   登出
+     * 登出
+     *
      * @param token
      */
-    public static void logout(String token,String appId){
-        securityManager.logout(token,appId);
+    public static void logout(String token, String appId) {
+        securityManager.logout(token, appId);
     }
 
 

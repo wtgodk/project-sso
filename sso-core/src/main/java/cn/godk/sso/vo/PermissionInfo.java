@@ -7,8 +7,8 @@ import lombok.Setter;
 import java.util.Set;
 
 /**
+ * 权限相关信息
  *
- *  权限相关信息
  * @author wt
  * @program project-sso
  * @create 2020-09-17  13:18
@@ -19,7 +19,7 @@ public class PermissionInfo {
 
 
     /**
-     *  角色信息
+     * 角色信息
      */
     private Set<String> roles = Sets.newHashSet();
 }

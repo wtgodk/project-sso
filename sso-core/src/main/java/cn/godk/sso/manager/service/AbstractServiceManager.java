@@ -5,14 +5,10 @@ import cn.godk.sso.cache.CacheManager;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 /**
- *
- *   service manager 抽象类
- *
- *    定义输入参数，中间逻辑等
+ * service manager 抽象类
+ * <p>
+ * 定义输入参数，中间逻辑等
  *
  * @author wt
  * @program project-sso
@@ -22,7 +18,7 @@ import javax.servlet.ServletResponse;
 @Getter
 public abstract class AbstractServiceManager implements ServiceManager {
     /**
-     *   缓存接口
+     * 缓存接口
      */
     private CacheManager<Service> cacheManager;
 

@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * cookie operation utils
  *
- *  cookie operation utils
  * @author wt
  * @program project-sso
  * @create 2020-09-17  11:00
@@ -18,13 +18,15 @@ public class CookieUtils {
     private static final int COOKIE_MAX_AGE = Integer.MAX_VALUE;
     // 保存路径,根路径
     private static final String COOKIE_PATH = "/";
+
     /**
-     *   从 request 中获取 cookie
-     * @param request request
-     * @param cookieName  cookie key
+     * 从 request 中获取 cookie
+     *
+     * @param request    request
+     * @param cookieName cookie key
      * @return
      */
-    public static String get(HttpServletRequest request,String cookieName){
+    public static String get(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             for (Cookie cookie : cookies) {
@@ -37,14 +39,13 @@ public class CookieUtils {
     }
 
 
-
     /**
      * 保存 cookie
      *
-     * @param response  response
-     * @param key  cookie key
-     * @param value  value
-     * @param remember  记住我
+     * @param response response
+     * @param key      cookie key
+     * @param value    value
+     * @param remember 记住我
      */
     public static void set(HttpServletResponse response, String key, String value, boolean remember) {
         int age = remember ? COOKIE_MAX_AGE : -1;
@@ -65,8 +66,10 @@ public class CookieUtils {
             set(response, key, "", null, COOKIE_PATH, 0, true);
         }
     }
+
     /**
      * 保存
+     *
      * @param response
      * @param key
      * @param value
