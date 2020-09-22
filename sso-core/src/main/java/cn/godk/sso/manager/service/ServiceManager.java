@@ -2,6 +2,8 @@ package cn.godk.sso.manager.service;
 
 import cn.godk.sso.bean.Permit;
 
+import java.util.List;
+
 /**
  * 服务管理接口
  *
@@ -13,10 +15,16 @@ public interface ServiceManager {
 
     /**
      * 获取 当前service 是否存在
-     *
+     * @param permit 参数
      * @return
      */
     Service getService(Permit permit);
+
+    /**
+     *  获取所有在线service
+     * @return
+     */
+    List<Service> getService();
 
     /**
      * 移除 指定service

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wt
@@ -35,6 +36,11 @@ public class DefaultServiceManager extends AbstractServiceManager {
             log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]", new Date(), permit.toString());
         }
         return getCacheManager().get(key);
+    }
+
+    @Override
+    public List<Service> getService() {
+         return getCacheManager().all();
     }
 
     @Override
@@ -79,6 +85,7 @@ public class DefaultServiceManager extends AbstractServiceManager {
             // FIXME 需要验证 是否正确
             service = new Service(appId);
             service.setType(permit.getType());
+            service.setUsername(permit.getUsername());
         }
         return getCacheManager().create(key, service, expire);
     }

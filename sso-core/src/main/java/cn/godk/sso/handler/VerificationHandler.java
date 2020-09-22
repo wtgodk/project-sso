@@ -2,6 +2,8 @@ package cn.godk.sso.handler;
 
 import cn.godk.sso.bean.Permit;
 
+import java.util.List;
+
 /**
  * 验证相关 handler
  *
@@ -18,6 +20,12 @@ public interface VerificationHandler {
      */
 
     Permit get(String key);
+
+    /**
+     *   获取缓存中的token
+     * @return
+     */
+    List<Permit> get();
 
     /**
      * 保存 token

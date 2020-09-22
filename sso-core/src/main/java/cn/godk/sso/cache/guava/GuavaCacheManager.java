@@ -7,6 +7,8 @@ import com.google.common.cache.RemovalListener;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * 本地缓存
  * <p>
@@ -45,6 +47,11 @@ public class GuavaCacheManager<T> implements CacheManager<T> {
     @Override
     public T get(String key) {
         return (T) guavaCache.get(key, guava, Object.class);
+    }
+
+    @Override
+    public List<T> all() {
+        return (List<T>) guavaCache.getAllValue(guava,Object.class);
     }
 
     @Override

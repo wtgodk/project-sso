@@ -6,6 +6,7 @@ import cn.godk.sso.cache.CacheManager;
 import cn.godk.sso.cache.guava.Guava;
 import cn.godk.sso.cache.guava.GuavaCacheManager;
 import cn.godk.sso.handler.DefaultHandler;
+import cn.godk.sso.handler.VerificationHandler;
 import cn.godk.sso.handler.rule.DefaultRule;
 import cn.godk.sso.manager.DefaultSecurityManager;
 import cn.godk.sso.manager.SecurityManager;
@@ -58,18 +59,27 @@ public class SystemInit {
     }
 
     /**
+     *   Verification Handler for permit manager
+     * @param tokenCacheManager
+     * @return
+     */
+    @Bean
+    public VerificationHandler verificationHandler(CacheManager<Permit> tokenCacheManager){
+        DefaultHandler defaultHandler = new DefaultHandler();
+        defaultHandler.setRule(new DefaultRule());
+        defaultHandler.setCacheManager(tokenCacheManager);
+        return defaultHandler;
+    }
+    /**
      * security manager
      *
      * @param serviceManager
      * @return
      */
     @Bean
-    public SecurityManager securityManager(ServiceManager serviceManager, CacheManager<Permit> tokenCacheManager) {
+    public SecurityManager securityManager(ServiceManager serviceManager,VerificationHandler verificationHandler) {
         DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager(serviceManager);
-        DefaultHandler defaultHandler = new DefaultHandler();
-        defaultHandler.setRule(new DefaultRule());
-        defaultHandler.setCacheManager(tokenCacheManager);
-        defaultSecurityManager.setVerificationHandler(defaultHandler);
+        defaultSecurityManager.setVerificationHandler(verificationHandler);
         SsoLoginHelper.setSecurityManager(defaultSecurityManager);
         return defaultSecurityManager;
     }

@@ -27,6 +27,12 @@ public class Result<T> {
      */
     private String message;
 
+    public Result(int code, T data, String message) {
+        this.code = code;
+        this.data = data;
+        this.message = message;
+    }
+
     public Result() {
     }
 

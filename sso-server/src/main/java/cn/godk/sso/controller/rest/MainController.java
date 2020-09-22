@@ -25,26 +25,24 @@ import java.util.Date;
 @Slf4j
 public class MainController {
 
-
-    @Resource
-    private ServiceManager serviceManager;
-
     /**
      * 登陆验证方法
-     *
      * @param username 用户名 TRUE
      * @param password 密码 TRUE
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(String appId, String username, String password) {
-        log.info("[{}] <API> username password information check ,param [username,password]->[{},{}]", new Date(), username, password);
-        return "/login";
+    public Result<Permit> login(String appId, String username, String password) {
+        log.info("[{}] <API> username password information check ,param [appId,username,password]->[{},{},{}]", new Date(), appId,username, password);
+        Permit permit = SsoLoginHelper.login(appId,username,password, Permit.Type.token);
+         if(permit==null){
+             return new Result<>(1,null,"fail");
+         }
+        return new Result<>(permit);
     }
 
     /**
      * 登陆状态校验
-     *
      * @param permit token信息 {@link Permit}
      * @return
      */
@@ -55,18 +53,17 @@ public class MainController {
         return new Result<>(check);
     }
 
-
     /**
      * 系统登出
-     *
      * @param appId 系统唯一ID  TRUE
      * @param token 登录状态信息token TRUE
      * @return
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public String logout(String appId, String token) {
+    public Result<Permit> logout(String appId, String token) {
         log.info("[{}] <API> system logout ,param [appId,token]->[{},{}]", new Date(), appId, token);
-        return "/token";
+        SsoLoginHelper.logout(token,appId);
+        return new Result<>();
     }
 
 

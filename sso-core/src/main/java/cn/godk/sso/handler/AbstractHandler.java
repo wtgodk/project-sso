@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * token handler
@@ -63,6 +64,11 @@ public abstract class AbstractHandler implements VerificationHandler {
         return token;
     }
 
+    @Override
+    public List<Permit> get() {
+
+        return getCacheManager().all();
+    }
 
     @Override
     public Permit get(String token) {

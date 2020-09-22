@@ -1,5 +1,7 @@
 package cn.godk.sso.cache;
 
+import java.util.List;
+
 /**
  * 缓存接口
  *
@@ -16,6 +18,12 @@ public interface CacheManager<T> {
      * @return
      */
     T get(String key);
+
+    /**
+     *   获取缓存所有内容
+     * @return
+     */
+   List<T> all();
 
     /**
      * 删除缓存

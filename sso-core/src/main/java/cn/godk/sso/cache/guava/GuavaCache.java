@@ -1,12 +1,14 @@
 package cn.godk.sso.cache.guava;
 
 import com.google.common.cache.Cache;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -78,6 +80,22 @@ public class GuavaCache {
         }
     }
 
+    /**
+     *   获取所有value值
+     * @param guavaKey
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public synchronized <T> List<T> getAllValue(Guava guavaKey, Class<T> clazz){
+        Cache<Object, T> switchCache = getCache(guavaKey);
+        List<T> cache = Lists.newArrayList();
+        ConcurrentMap<Object, T> cacheMap = switchCache.asMap();
+        cacheMap.forEach((x,y)->{
+            cache.add(y);
+        });
+        return cache;
+    }
 
     /**
      * 获取
