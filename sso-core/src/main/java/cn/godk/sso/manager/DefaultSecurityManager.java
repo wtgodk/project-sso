@@ -27,7 +27,9 @@ import java.util.Date;
 @Slf4j
 public class DefaultSecurityManager implements SecurityManager {
 
-
+    /**
+     *  service manager
+     */
     private ServiceManager serviceManager;
     /**
      * cookie token key生成 handler
@@ -70,7 +72,7 @@ public class DefaultSecurityManager implements SecurityManager {
 
     @Override
     public void logout(String token, String appId) {
-        Permit permit = verificationHandler.del(token);
+        verificationHandler.del(token);
         serviceManager.delByToken(token);
         //TODO  申请退出 appId
     }

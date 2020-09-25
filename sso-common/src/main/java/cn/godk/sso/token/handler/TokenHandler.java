@@ -23,13 +23,4 @@ public interface TokenHandler {
 
     String get(String tokenName, ServletRequest request);
 
-    /**
-     *   TODO  移动到 sso-core 生成
-     * @param tokenName  token key
-     * @param appId appid
-     * @return
-     */
-    //  Token create(String tokenName, String appId);
-
-
 }

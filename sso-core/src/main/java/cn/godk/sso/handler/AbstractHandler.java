@@ -22,8 +22,6 @@ import java.util.List;
 @Getter
 @Slf4j
 public abstract class AbstractHandler implements VerificationHandler {
-
-
     /**
      * 缓存
      */
@@ -66,7 +64,6 @@ public abstract class AbstractHandler implements VerificationHandler {
 
     @Override
     public List<Permit> get() {
-
         return getCacheManager().all();
     }
 

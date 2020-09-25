@@ -24,7 +24,7 @@ public class SsoLoginHelper {
      * @param password 密码
      */
     public static Permit login(String appId, String username, String password, Permit.Type type) {
-        return securityManager.login(appId, username, password, type);
+        return getSecurityManager().login(appId, username, password, type);
     }
 
     /**
@@ -33,7 +33,7 @@ public class SsoLoginHelper {
      * @param token
      */
     public static Permit check(String token, String appId) {
-        return securityManager.check(token, appId);
+        return getSecurityManager().check(token, appId);
     }
 
 
@@ -43,7 +43,7 @@ public class SsoLoginHelper {
      * @param token
      */
     public static void logout(String token, String appId) {
-        securityManager.logout(token, appId);
+        getSecurityManager().logout(token, appId);
     }
 
 

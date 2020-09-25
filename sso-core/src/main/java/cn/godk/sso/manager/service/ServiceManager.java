@@ -42,6 +42,7 @@ public interface ServiceManager {
 
     /**
      * 移除指定用户的service
+     * @param userKey 用户名
      */
     void delByUsername(String userKey);
 

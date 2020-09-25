@@ -24,10 +24,14 @@ import java.util.List;
 @RestController
 public class ServiceController extends BaseController {
 
+
     @Resource
     private ServiceManager serviceManager;
 
-
+    /**
+     *  simple service manager query all service
+     * @return
+     */
     @RequestMapping("/all")
     public Result<List<Service>> service(){
         log.info("[{}] service manager :load all online service",new Date());
@@ -36,6 +40,42 @@ public class ServiceController extends BaseController {
     }
 
 
+    /**
+     *   simple service Manager  remove service by app id
+     * @param appId 服务ID
+     * @return
+     */
+    @RequestMapping("/removeByAppId")
+    public Result<String> removeByAppId(String appId){
+        log.info("[{}] service manager : remove service by app id ,param [appId]->[{}]",new Date(),appId);
+        serviceManager.delByAppId(appId);
+        return new Result<>();
+    }
+
+    /**
+     *  simple service manager  remove service by  token
+     * @param token 在线码
+     * @return
+     */
+    @RequestMapping("/removeByToken")
+    public Result<String> removeByToken(String token){
+        log.info("[{}] service manager : remove service by token ,param [token]->[{}]",new Date(),token);
+        serviceManager.delByToken(token);
+        return new Result<>();
+    }
+
+
+    /**
+     *   simple service Manager remove service  by username
+     * @param username 用户名
+     * @return
+     */
+    @RequestMapping("/removeByUser")
+    public Result<String> removeByUser(String username){
+        log.info("[{}] service manager : remove service by username ,param [username]->[{}]",new Date(),username);
+        serviceManager.delByUsername(username);
+        return new Result<>();
+    }
 
 
 

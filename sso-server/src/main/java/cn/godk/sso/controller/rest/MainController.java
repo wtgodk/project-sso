@@ -3,14 +3,12 @@ package cn.godk.sso.controller.rest;
 import cn.godk.sso.SsoLoginHelper;
 import cn.godk.sso.bean.Permit;
 import cn.godk.sso.bean.result.Result;
-import cn.godk.sso.manager.service.ServiceManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.Date;
 
 /**
