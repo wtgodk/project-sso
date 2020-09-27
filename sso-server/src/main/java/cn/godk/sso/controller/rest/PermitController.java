@@ -23,7 +23,8 @@ import java.util.List;
 @RestController
 @Slf4j
 public class PermitController extends BaseController {
-    @Resource(name = "")
+
+    @Resource
     private VerificationHandler verificationHandler;
 
     /**

@@ -16,6 +16,17 @@ import java.util.Map;
 @Setter
 @Getter
 public class LoginUser {
+    public LoginUser() {
+    }
+
+    public LoginUser(String username, Map<String, Object> params) {
+        this.username = username;
+        this.params = params;
+    }
+
+    public LoginUser(String username) {
+        this.username = username;
+    }
 
     /**
      * 用户名

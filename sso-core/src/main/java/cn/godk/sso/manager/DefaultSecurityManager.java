@@ -39,7 +39,7 @@ public class DefaultSecurityManager implements SecurityManager {
     /**
      * 自定义验证方法 插入
      */
-    private Realm realm = new DefaultUsernamePasswordRealm();
+    private Realm realm ;
 
 
     public DefaultSecurityManager(ServiceManager serviceManager, Realm realm) {
@@ -47,9 +47,7 @@ public class DefaultSecurityManager implements SecurityManager {
         this.realm = realm;
     }
 
-    public DefaultSecurityManager(ServiceManager serviceManager) {
-        this.serviceManager = serviceManager;
-    }
+
 
 
     @Override
@@ -65,9 +63,8 @@ public class DefaultSecurityManager implements SecurityManager {
             serviceManager.updateService(permit, appId);
             return permit;
         } catch (LoginFailException e) {
-            //TODO  登录失败处理
+            throw e;
         }
-        return null;
     }
 
     @Override

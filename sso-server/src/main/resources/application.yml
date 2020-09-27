@@ -1,2 +1,11 @@
 server:
   port: 90
+
+#  数据库链接地址
+project:
+  jdbc:
+    datasource:
+      driver: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/ikreai?useUnicode=true
+      username: root
+      password: 123456

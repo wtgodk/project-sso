@@ -6,6 +6,7 @@ import cn.godk.sso.conf.Constant;
 import cn.godk.sso.controller.base.BaseController;
 import cn.godk.sso.controller.base.PageBaseController;
 import cn.godk.sso.cookie.CookieUtils;
+import cn.godk.sso.exception.LoginFailException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +48,7 @@ public class LoginController extends PageBaseController {
         }
         model.addAttribute("backUrl", backUrl);
         model.addAttribute("appId", appId);
+        model.addAttribute("msg", request.getParameter("msg"));
         return "/login.html?backUrl=" + backUrl + "&appId=" + appId;
     }
 
@@ -66,13 +68,15 @@ public class LoginController extends PageBaseController {
                         @RequestParam(name = "rememberMe", defaultValue = "0") int rememberMe,
                         @RequestParam(name = "backUrl", required = false) String backUrl, HttpServletResponse response) {
         log.info("[{}] load page : login check ,param [username,password,appId,rememberMe,backUrl]->[{},{},{},{},{}]", new Date(), username, password, appId, rememberMe, backUrl);
-        Permit permit = SsoLoginHelper.login(appId, username, password, Permit.Type.cookie);
-        if (permit == null) {
-            // 登录失败 ，验证不通过
-            return "redirect:/login.html?backUrl=" + backUrl;
-        }
-        CookieUtils.set(response, Constant.COOKIE_NAME, permit.getKey(), rememberMe == 1);
-       return  success(backUrl,permit);
+       try{
+           Permit permit = SsoLoginHelper.login(appId, username, password, Permit.Type.cookie);
+           CookieUtils.set(response, Constant.COOKIE_NAME, permit.getKey(), rememberMe == 1);
+           return  success(backUrl,permit);
+       }catch (LoginFailException e){
+           // 登录失败 ，验证不通过
+           return "redirect:/login.html?backUrl=" + backUrl +"&msg=" + e.getMessage();
+       }
+
     }
 
 

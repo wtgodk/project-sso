@@ -13,8 +13,14 @@ import cn.godk.sso.manager.SecurityManager;
 import cn.godk.sso.manager.service.DefaultServiceManager;
 import cn.godk.sso.manager.service.Service;
 import cn.godk.sso.manager.service.ServiceManager;
+import cn.godk.sso.realm.DefaultUsernamePasswordRealm;
+import cn.godk.sso.realm.IUserService;
+import cn.godk.sso.realm.Realm;
+import cn.godk.sso.vo.CertificationInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 系统初始化
@@ -25,8 +31,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SystemInit {
-
-
+@Resource
+    private IUserService userService;
     /**
      * service manager
      *
@@ -77,11 +83,20 @@ public class SystemInit {
      * @return
      */
     @Bean
-    public SecurityManager securityManager(ServiceManager serviceManager,VerificationHandler verificationHandler) {
-        DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager(serviceManager);
+    public SecurityManager securityManager(ServiceManager serviceManager,VerificationHandler verificationHandler,Realm realm) {
+        DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager(serviceManager,realm);
         defaultSecurityManager.setVerificationHandler(verificationHandler);
         SsoLoginHelper.setSecurityManager(defaultSecurityManager);
         return defaultSecurityManager;
+    }
+
+    /**
+     *   用户信息验证、权限信息获取等操作
+     * @return
+     */
+    @Bean
+    public Realm realm(){
+        return new DefaultUsernamePasswordRealm(userService);
     }
 
 
