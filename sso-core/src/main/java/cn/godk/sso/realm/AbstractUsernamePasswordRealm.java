@@ -1,5 +1,7 @@
 package cn.godk.sso.realm;
 
+import cn.godk.sso.bean.Permit;
+import cn.godk.sso.cache.CacheManager;
 import cn.godk.sso.exception.AccountErrorLoginFailException;
 import cn.godk.sso.exception.DenyLoginFailException;
 import cn.godk.sso.manager.PermissionManager;
@@ -27,8 +29,11 @@ public abstract class AbstractUsernamePasswordRealm implements Realm {
      */
     private boolean permission = false;
 
-
+    /**
+     *  服务登陆权限管理
+     */
     private PermissionManager permissionManager;
+
 
     public AbstractUsernamePasswordRealm() {
     }
@@ -51,6 +56,7 @@ public abstract class AbstractUsernamePasswordRealm implements Realm {
             }
             PermissionInfo permissionInfo = authorize(username);
             Set<String> roles = permissionInfo.getRoles();
+            // 是否可以登录该系统、目前仅使用角色进行管理，未进行详细的权限控制（感觉不太需要详细的权限控制，仅作登录限制即可）
             Set<String> rolesByAppId = permissionManager.getRolesByAppId(appId);
             if (rolesByAppId != null && rolesByAppId.size() > 0) {
                 rolesByAppId.retainAll(roles);
@@ -61,7 +67,7 @@ public abstract class AbstractUsernamePasswordRealm implements Realm {
         } else if (loginUser == null) {
             throw new AccountErrorLoginFailException("Account password does not match");
         }
-
+        // 登陆成功
         return new CertificationInfo(username, password, loginUser);
     }
 

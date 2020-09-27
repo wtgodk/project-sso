@@ -111,12 +111,13 @@ public abstract class AbstractSsoFilter extends HttpServlet implements Filter {
     /**
      * token 、 cookie 校验方法
      *
-     * @param permit
+     * @param token
      * @return
      */
-    protected Result<Permit> check(Permit permit) {
-        return HttpUtil.doPost(getSsoServer() + "/check", permit, new TypeReference<Result<Permit>>() {
-        });
+    protected Result<Permit> check(String token) {
+        Permit permit = new Permit(token);
+        permit.setAppId(getAppId());
+        return HttpUtil.doPost(getSsoServer() + "/check", permit, new TypeReference<Result<Permit>>() {});
 
     }
 

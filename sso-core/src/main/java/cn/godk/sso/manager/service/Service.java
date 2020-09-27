@@ -1,8 +1,12 @@
 package cn.godk.sso.manager.service;
 
 import cn.godk.sso.bean.Permit;
+import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author wt
@@ -15,9 +19,9 @@ public class Service {
 
 
     /**
-     * 服务ID
+     * 服务ID 集合
      */
-    private String appId;
+    private Set<String> appId = Sets.newHashSet();
     /**
      * 服务登录类型
      */
@@ -26,12 +30,16 @@ public class Service {
      * 用户 唯一 值。
      */
     private String username;
+    /**
+     *  使用的 token内容
+     */
+    private String token;
+
+
     public Service() {
     }
 
-    public Service(String appId) {
-        this.appId = appId;
-    }
+
 
 
 }

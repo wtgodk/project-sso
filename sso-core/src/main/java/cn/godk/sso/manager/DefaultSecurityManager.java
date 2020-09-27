@@ -1,9 +1,11 @@
 package cn.godk.sso.manager;
 
 import cn.godk.sso.bean.Permit;
+import cn.godk.sso.cache.CacheManager;
 import cn.godk.sso.exception.LoginFailException;
 import cn.godk.sso.handler.VerificationHandler;
 import cn.godk.sso.manager.service.ServiceManager;
+import cn.godk.sso.manager.user.UserManager;
 import cn.godk.sso.realm.DefaultUsernamePasswordRealm;
 import cn.godk.sso.realm.Realm;
 import cn.godk.sso.vo.CertificationInfo;
@@ -35,7 +37,10 @@ public class DefaultSecurityManager implements SecurityManager {
      * cookie token key生成 handler
      */
     private VerificationHandler verificationHandler;
-
+    /**
+     *  在线用户缓存
+     */
+    private UserManager userManager;
     /**
      * 自定义验证方法 插入
      */
@@ -53,18 +58,14 @@ public class DefaultSecurityManager implements SecurityManager {
     @Override
     public Permit login(String appId, String username, String password, Permit.Type type) {
         log.debug("[{}] securityManager login operation , param [appId,username,password,type]->[{},{},{},{}]", new Date(), appId, username, password, type.name());
-        try {
-            // 只要不抛出异常 说明登录成功
-            CertificationInfo authenticate = realm.login(appId, username, password);
-
-            LoginUser loginUser = authenticate.getLoginUser();
-            Permit permit = verificationHandler.create(loginUser.getUsername(), appId, type);
-            // 加一个 permit 类型
-            serviceManager.updateService(permit, appId);
-            return permit;
-        } catch (LoginFailException e) {
-            throw e;
-        }
+        // 只要不抛出异常 说明登录成功
+        CertificationInfo authenticate = realm.login(appId, username, password);
+        LoginUser loginUser = authenticate.getLoginUser();
+        Permit permit = verificationHandler.create(loginUser.getUsername(), appId, type);
+        // 加一个 permit 类型
+        serviceManager.updateService(permit, appId);
+        userManager.create(loginUser.getUsername(),permit);
+        return permit;
     }
 
     @Override

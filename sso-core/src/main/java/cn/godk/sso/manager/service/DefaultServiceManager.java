@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author wt
@@ -43,35 +44,24 @@ public class DefaultServiceManager extends AbstractServiceManager {
          return getCacheManager().all();
     }
 
-    @Override
-    public void delByAppId(String appId) {
-        // TODO 踢出、强制下线 指定服务
-
-    }
 
     @Override
-    public void delByUsername(String userKey) {
-        // TODO 踢出、强制下线 指定服务
-
-    }
-
-    @Override
-    public void delService(Permit permit) {
+    public Service delService(Permit permit) {
         String key = permit.getKey();
         if (key == null) {
             log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]", new Date(), permit.toString());
         }
-        delByToken(key);
+        return delByToken(key);
     }
 
     @Override
-    public void delByToken(String token) {
+    public Service delByToken(String token) {
         log.info("[{}] del service by token , [token]-[{}]", new Date(), token);
         // 下线 登出
         if (token == null) {
             log.debug("[{}] request token is empty ,can not find service , [token]->[{}]", new Date(), token);
         }
-        getCacheManager().delIfExist(token);
+        return getCacheManager().delIfExist(token);
     }
 
     @Override
@@ -81,12 +71,14 @@ public class DefaultServiceManager extends AbstractServiceManager {
             log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]", new Date(), permit.toString());
         }
         Service service = getService(permit);
-        if (service == null || !service.getAppId().equals(appId)) {
-            // FIXME 需要验证 是否正确
-            service = new Service(appId);
+        if (service == null ) {
+            service = new Service();
             service.setType(permit.getType());
             service.setUsername(permit.getUsername());
+            service.setToken(key);
         }
+        Set<String> appIdList = service.getAppId();
+        appIdList.add(appId);
         return getCacheManager().create(key, service, expire);
     }
 

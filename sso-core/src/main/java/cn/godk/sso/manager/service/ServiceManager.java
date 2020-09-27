@@ -27,29 +27,16 @@ public interface ServiceManager {
     List<Service> getService();
 
     /**
-     * 移除 指定service
-     *
-     * @param appId
-     */
-    void delByAppId(String appId);
-
-    /**
      * 清除指定token，所有使用该token的服务下线
      *
      * @param token 通行证
      */
-    void delByToken(String token);
-
-    /**
-     * 移除指定用户的service
-     * @param userKey 用户名
-     */
-    void delByUsername(String userKey);
+    Service delByToken(String token);
 
     /**
      * 清除指定通行证，所有使用该通行证的服务下线
      */
-    void delService(Permit permit);
+    Service delService(Permit permit);
 
     /**
      * 更新 service 在线时间

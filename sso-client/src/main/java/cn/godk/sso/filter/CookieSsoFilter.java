@@ -76,6 +76,12 @@ public class CookieSsoFilter extends AbstractSsoFilter {
     /**
      * 客户端无法获取到 服务端 cookie时使用该方法。（跨域）
      *
+     *
+     *   获取 session中是否有token信息如果有说明该系统登陆过，如果没有说明没有登陆过，
+     *   尝试获取 service_ticket，如果存在则加入session中key信息，如果不存在跳转到登陆页面
+     *
+     *   该实现并不完美，存在较多问题。
+     *
      * @param req
      * @param res
      * @return 是否重定向
@@ -84,17 +90,13 @@ public class CookieSsoFilter extends AbstractSsoFilter {
         Result<Permit> result = null;
         String token = (String) req.getSession().getAttribute(key);
         if (token != null) {
-            Permit cookiePermit = new Permit(token);
-            cookiePermit.setAppId(getAppId());
-            result = check(cookiePermit);
+            result = check(token);
         } else {
             // 当前系统未登录
             String serviceTicket = req.getParameter("service_ticket");
             if (StringUtils.isNotBlank(serviceTicket)) {
-                Permit cookiePermit = new Permit(serviceTicket);
-                cookiePermit.setAppId(getAppId());
                 // TODO  后续改成 单独校验值 类似 cas st
-                result = check(cookiePermit);
+                result = check(serviceTicket);
             }
         }
         if (isRedirect(result, req, res)) {
@@ -124,9 +126,7 @@ public class CookieSsoFilter extends AbstractSsoFilter {
             return true;
         } else {
             // 验证 token 是否有效  appId,token
-            Permit cookiePermit = new Permit(cookie);
-            cookiePermit.setAppId(getAppId());
-            Result<Permit> result = HttpUtil.doPost(getSsoServer() + "/check", cookiePermit, new TypeReference<Result<Permit>>() {});
+            Result<Permit> result = check(cookie);
             if (isRedirect(result, req, res)) {
                 return true;
             }
