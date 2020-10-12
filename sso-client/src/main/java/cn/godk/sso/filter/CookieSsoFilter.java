@@ -130,7 +130,6 @@ public class CookieSsoFilter extends AbstractSsoFilter {
             if (isRedirect(result, req, res)) {
                 return true;
             }
-            // TODO  code == 其他
             // token 有效
             assert result != null;
             Permit permit = result.getData();

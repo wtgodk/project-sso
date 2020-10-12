@@ -2,8 +2,11 @@ package cn.godk.sso.manager;
 
 import cn.godk.sso.bean.Permit;
 import cn.godk.sso.cache.CacheManager;
+import cn.godk.sso.cache.guava.Guava;
+import cn.godk.sso.cache.guava.GuavaCacheManager;
 import cn.godk.sso.exception.LoginFailException;
 import cn.godk.sso.handler.VerificationHandler;
+import cn.godk.sso.manager.service.DefaultServiceManager;
 import cn.godk.sso.manager.service.ServiceManager;
 import cn.godk.sso.manager.user.UserManager;
 import cn.godk.sso.realm.DefaultUsernamePasswordRealm;
@@ -52,9 +55,6 @@ public class DefaultSecurityManager implements SecurityManager {
         this.realm = realm;
     }
 
-
-
-
     @Override
     public Permit login(String appId, String username, String password, Permit.Type type) {
         log.debug("[{}] securityManager login operation , param [appId,username,password,type]->[{},{},{},{}]", new Date(), appId, username, password, type.name());
@@ -64,15 +64,16 @@ public class DefaultSecurityManager implements SecurityManager {
         Permit permit = verificationHandler.create(loginUser.getUsername(), appId, type);
         // 加一个 permit 类型
         serviceManager.updateService(permit, appId);
-        userManager.create(loginUser.getUsername(),permit);
+
+    //    userManager.create(loginUser.getUsername(),permit);
         return permit;
     }
 
     @Override
     public void logout(String token, String appId) {
+        log.info("[{}] securityManager logout operation , param [token,appId]->[{},{}]",new Date(),token,appId);
         verificationHandler.del(token);
         serviceManager.delByToken(token);
-        //TODO  申请退出 appId
     }
 
     @Override

@@ -2,6 +2,7 @@ package cn.godk.sso;
 
 
 import cn.godk.sso.bean.Permit;
+import cn.godk.sso.manager.DefaultSecurityManager;
 import cn.godk.sso.manager.SecurityManager;
 
 /**
@@ -48,7 +49,9 @@ public class SsoLoginHelper {
 
 
     public static SecurityManager getSecurityManager() {
-        // todo 加一个默认的
+        if(null == securityManager){
+           throw new Error("system init error ,can not find cn.godk.sso.manager.SecurityManager ");
+        }
         return securityManager;
     }
 

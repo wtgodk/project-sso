@@ -49,7 +49,8 @@ public class LoginController extends PageBaseController {
         model.addAttribute("backUrl", backUrl);
         model.addAttribute("appId", appId);
         model.addAttribute("msg", request.getParameter("msg"));
-        return "/login.html?backUrl=" + backUrl + "&appId=" + appId;
+    //    ?backUrl=" + backUrl + "&appId=" + appId
+        return "/login";
     }
 
     /**

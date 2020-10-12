@@ -36,6 +36,7 @@ public interface CacheManager<T> {
      * 如果存在则删除
      *
      * @param key
+     * @return
      */
     T delIfExist(String key);
 

@@ -9,3 +9,9 @@ project:
       url: jdbc:mysql://127.0.0.1:3306/ikreai?useUnicode=true
       username: root
       password: 123456
+
+spring:
+  thymeleaf:
+    mode: HTML
+    suffix: .html
+    prefix: classpath:/templates/

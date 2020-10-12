@@ -16,7 +16,6 @@ import java.util.Date;
  * 全局异常捕获 处理
  *
  * @author weitao
- * @program aircraft
  * @create 2019-04-25  13:49
  */
 @ControllerAdvice
@@ -26,8 +25,8 @@ public class GlobalDefaultExceptionHandler {
     /**
      * 声明要捕获的异常
      *
-     * @param request
-     * @param e
+     * @param request request
+     * @param e  异常
      * @return
      */
     @ExceptionHandler(Exception.class)
@@ -40,10 +39,10 @@ public class GlobalDefaultExceptionHandler {
             result = new Result<>(2, e.getMessage(), "fail");
             log.info(new Date() + "login fail " + e);
         } else if (e instanceof RuntimeException) {
-            result = new Result<>(1, "exception: 系统异常：" + e, null);
+            result = new Result<>(1, "exception: " + e, null);
             setLogger(e, "EXCEPTION:", uri);
         } else {
-            result = new Result<>(-1, "exception: 未知错误：" + e, null);
+            result = new Result<>(-1, "exception: " + e, null);
             setLogger(e, "EXCEPTION:", uri);
         }
         return result;
@@ -77,7 +76,7 @@ public class GlobalDefaultExceptionHandler {
                 pw.close();
             }
         }
-        log.error(new Date() + content + ":\n 请求链接：" + requestUrl + "\n 异常信息：" + sw.toString());
+        log.error(new Date() + content + ":\n request url：" + requestUrl + "\n Exception Info：" + sw.toString());
     }
 
 

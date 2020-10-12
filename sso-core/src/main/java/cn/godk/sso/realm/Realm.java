@@ -22,7 +22,4 @@ public interface Realm {
      */
     CertificationInfo login(String appId, String username, String password);
 
-
-    // TODO 后续添加权限认证
-
 }
