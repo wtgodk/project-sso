@@ -1,5 +1,6 @@
 package cn.godk.sso.filter;
 
+import cn.godk.sso.ParamStore;
 import cn.godk.sso.bean.Permit;
 import cn.godk.sso.bean.result.Result;
 import cn.godk.sso.cookie.CookieUtils;
@@ -11,10 +12,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -41,6 +39,9 @@ public class CookieSsoFilter extends AbstractSsoFilter {
      */
     private boolean crossDomain = false;
 
+
+
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
@@ -65,7 +66,7 @@ public class CookieSsoFilter extends AbstractSsoFilter {
      */
     public void redirect(HttpServletResponse response, String rollback) {
         try {
-            response.sendRedirect(getSsoLoginUrl() + "?backUrl=" + EncodeUtils.encodeURL(getSsoClientUrl() + rollback) + "&appId=" + getAppId());
+            response.sendRedirect(ParamStore.ssoLoginUrl + "?backUrl=" + EncodeUtils.encodeURL(getSsoClientUrl() + rollback) + "&appId=" + ParamStore.appId);
         } catch (IOException e) {
             log.error("[{}] redirect url , [rollback]->[{}]", new Date(), rollback);
             throw new RuntimeException(e);
@@ -91,6 +92,10 @@ public class CookieSsoFilter extends AbstractSsoFilter {
         String token = (String) req.getSession().getAttribute(key);
         if (token != null) {
             result = check(token);
+            if (isRedirect(result, req, res)) {
+                req.getSession().invalidate();
+                return true;
+            }
         } else {
             // 当前系统未登录
             String serviceTicket = req.getParameter("service_ticket");

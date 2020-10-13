@@ -1,6 +1,7 @@
 package cn.godk.sso.filter;
 
 
+import cn.godk.sso.ParamStore;
 import cn.godk.sso.bean.Permit;
 import cn.godk.sso.bean.result.Result;
 import cn.godk.sso.utils.HttpUtil;
@@ -51,45 +52,19 @@ public abstract class AbstractSsoFilter extends HttpServlet implements Filter {
      * 获取客户端 地址
      */
     private String ssoClientUrlKey = "ssoClientUrlKey";
-    /**
-     * 服务ID
-     */
-    private String appId;
-    /**
-     * sso 地址
-     */
-    private String ssoServer;
 
-
-    /**
-     * sso 登陆页面地址
-     */
-    private String ssoLoginUrl;
-    /**
-     * 退出登录地址
-     */
-    private String logoutPath;
-    /**
-     * 排除路径
-     */
-    private String excludedPaths;
-
-    /**
-     * 客户端 地址
-     */
-    private String ssoClientUrl;
 
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         log.info("[{}] filter config init ", new Date());
         // 参数初始化
-        this.ssoServer = filterConfig.getInitParameter(ssoServerUrlKey);
-        this.logoutPath = filterConfig.getInitParameter(ssoLogoutUrlKey);
-        this.excludedPaths = filterConfig.getInitParameter(excludedPathsKey);
-        this.ssoLoginUrl = filterConfig.getInitParameter(ssoLoginUrlKey);
-        this.appId = filterConfig.getInitParameter(appIdKey);
-        this.ssoClientUrl = filterConfig.getInitParameter(ssoClientUrlKey);
+        ParamStore.ssoServer = filterConfig.getInitParameter(ssoServerUrlKey);
+        ParamStore.logoutPath = filterConfig.getInitParameter(ssoLogoutUrlKey);
+        ParamStore.excludedPaths = filterConfig.getInitParameter(excludedPathsKey);
+        ParamStore.ssoLoginUrl = filterConfig.getInitParameter(ssoLoginUrlKey);
+        ParamStore.appId = filterConfig.getInitParameter(appIdKey);
+        ParamStore.ssoClientUrl = filterConfig.getInitParameter(ssoClientUrlKey);
 
     }
 
@@ -105,7 +80,7 @@ public abstract class AbstractSsoFilter extends HttpServlet implements Filter {
 
 
     public String getSsoClientUrl() {
-        return PathUtils.pathCompletion(ssoClientUrl);
+        return PathUtils.pathCompletion(ParamStore.ssoClientUrl);
     }
 
     /**
@@ -116,8 +91,8 @@ public abstract class AbstractSsoFilter extends HttpServlet implements Filter {
      */
     protected Result<Permit> check(String token) {
         Permit permit = new Permit(token);
-        permit.setAppId(getAppId());
-        return HttpUtil.doPost(getSsoServer() + "/check", permit, new TypeReference<Result<Permit>>() {});
+        permit.setAppId(ParamStore.appId);
+        return HttpUtil.doPostJson(ParamStore.ssoServer+ "/check", permit, new TypeReference<Result<Permit>>() {});
 
     }
 

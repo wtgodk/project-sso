@@ -4,10 +4,7 @@ import cn.godk.sso.SsoLoginHelper;
 import cn.godk.sso.bean.Permit;
 import cn.godk.sso.bean.result.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -58,7 +55,7 @@ public class MainController {
      * @return
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public Result<Permit> logout(String appId, String token) {
+    public Result<Permit> logout(@RequestParam(name = "appId") String appId, String token) {
         log.info("[{}] <API> system logout ,param [appId,token]->[{},{}]", new Date(), appId, token);
         SsoLoginHelper.logout(token,appId);
         return new Result<>();

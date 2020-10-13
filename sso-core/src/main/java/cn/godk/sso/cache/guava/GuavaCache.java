@@ -70,7 +70,7 @@ public class GuavaCache {
         try {
             return getVal(key, guavaKey, clazz);
         } catch (Exception e) {
-            remove(key, guavaKey);
+            removeIfExist(key, guavaKey);
             if (clazz == List.class) {
                 ArrayList list = new ArrayList();
                 set(key, list, guavaKey);

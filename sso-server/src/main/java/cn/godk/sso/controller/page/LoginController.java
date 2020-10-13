@@ -77,7 +77,6 @@ public class LoginController extends PageBaseController {
            // 登录失败 ，验证不通过
            return "redirect:/login.html?backUrl=" + backUrl +"&msg=" + e.getMessage();
        }
-
     }
 
 
@@ -97,7 +96,7 @@ public class LoginController extends PageBaseController {
                          HttpServletResponse response) {
         log.info("[{}] load page : logout ,param [appId,backUrl]->[{},{}]", new Date(), appId, backUrl);
         String cookie = CookieUtils.get(request, Constant.COOKIE_NAME);
-        SsoLoginHelper.logout(appId, cookie);
+        SsoLoginHelper.logout(cookie,appId);
         CookieUtils.destroy(request, response, Constant.COOKIE_NAME);
         return "redirect:/login.html?backUrl=" + backUrl + "&appId=" + appId;
     }
