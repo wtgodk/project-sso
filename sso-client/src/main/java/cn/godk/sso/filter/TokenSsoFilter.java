@@ -51,6 +51,10 @@ public class TokenSsoFilter extends CookieSsoFilter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
+        if(greenLight(req.getServletPath())){
+            chain.doFilter(req, response);
+            return;
+        }
         String token = tokenHandler.get(getToken(), request);
         if(token==null){
             //可以尝试获取 cookie如果存在cookie 那么也可以校验登录

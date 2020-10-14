@@ -4,6 +4,7 @@ package cn.godk.sso.filter;
 import cn.godk.sso.ParamStore;
 import cn.godk.sso.bean.Permit;
 import cn.godk.sso.bean.result.Result;
+import cn.godk.sso.matcher.AntPathMatcher;
 import cn.godk.sso.utils.HttpUtil;
 import cn.godk.sso.utils.PathUtils;
 import com.alibaba.fastjson.TypeReference;
@@ -54,6 +55,7 @@ public abstract class AbstractSsoFilter extends HttpServlet implements Filter {
     private String ssoClientUrlKey = "ssoClientUrlKey";
 
 
+    private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -96,5 +98,24 @@ public abstract class AbstractSsoFilter extends HttpServlet implements Filter {
 
     }
 
+    /**
+     *   放行路径
+     * @param servletPath  请求路径
+     * @return
+     */
+    protected boolean greenLight(String servletPath){
+        // excluded path check
+        if (ParamStore.excludedPaths!=null && ParamStore.excludedPaths.trim().length()>0) {
+            for (String excludedPath:ParamStore.excludedPaths.split(",")) {
+                String uriPattern = excludedPath.trim();
+                // 支持ANT表达式
+                if (antPathMatcher.match(uriPattern, servletPath)) {
+                    // excluded path, allow
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }

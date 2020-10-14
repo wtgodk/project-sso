@@ -46,6 +46,10 @@ public class CookieSsoFilter extends AbstractSsoFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+        if(greenLight(req.getServletPath())){
+            chain.doFilter(req, res);
+            return;
+        }
         boolean redirect;
         if (isCrossDomain()) {
             redirect = crossDomain(req, res);
