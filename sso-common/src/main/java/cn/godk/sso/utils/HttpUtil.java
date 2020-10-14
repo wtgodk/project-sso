@@ -127,7 +127,8 @@ public class HttpUtil {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 // 返回json格式：
                 String result = EntityUtils.toString(response.getEntity());
-                return JSON.parseObject(result, type);
+                Object parse = JSON.parse(result);
+                return JSON.parseObject(JSON.toJSONString(parse), type);
             } else {
                 log.error("拉取失败,错误编码为：" + response.getStatusLine().getStatusCode());
                 return null;

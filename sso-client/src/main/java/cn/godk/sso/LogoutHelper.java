@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
  * @program project-sso
  * @create 2020-10-13  11:06
  */
-public class LogoutHelper {
+public abstract class LogoutHelper {
 
 
     /**

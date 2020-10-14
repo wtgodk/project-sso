@@ -10,6 +10,7 @@ import cn.godk.sso.utils.HttpUtil;
 import com.alibaba.fastjson.TypeReference;
 import lombok.Getter;
 import lombok.Setter;
+import org.omg.SendingContext.RunTime;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,13 +28,14 @@ import java.io.IOException;
  *   登录失败将抛出异常
  *   登陆成功调用
  *
+ *
  * @author wt
  * @program project-sso
  * @create 2020-09-27  14:17
  */
 @Setter
 @Getter
-public class TokenSsoFilter extends CookieSsoFilter {
+public class TokenSsoFilter extends AbstractSsoFilter {
     /**
      *   token key  default `token`
      */
@@ -42,8 +44,11 @@ public class TokenSsoFilter extends CookieSsoFilter {
      *   获取token handler
      *
      */
-    private TokenHandler tokenHandler;
+    private TokenHandler tokenHandler ;
 
+    public TokenSsoFilter() {
+        tokenHandler =new DefaultTokenHandler();
+    }
     public TokenSsoFilter(TokenHandler tokenHandler) {
         this.tokenHandler = tokenHandler;
     }
@@ -51,7 +56,7 @@ public class TokenSsoFilter extends CookieSsoFilter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
-        if(greenLight(req.getServletPath())){
+        if(greenLight(req.getServletPath()) || !isAjaxRequest(req)){
             chain.doFilter(req, response);
             return;
         }
@@ -64,20 +69,23 @@ public class TokenSsoFilter extends CookieSsoFilter {
                 Result<Permit> result = check(cookie);
                 if (result == null || result.getData() == null) {
                     // 登录失效
-                    throw new NotLoggedInException();
+                    exception(request,response,new NotLoggedInException());
+                    return;
                 }
                 // token 有效
                 operation(request,response,result.getData());
             }else{
                 //未登录，抛出异常
-                throw new NotLoggedInException();
+                exception(request,response,new NotLoggedInException());
+                return;
             }
         }
         // 验证 token 是否有效  appId,token
         Result<Permit> result = check(token);
         if (result == null || result.getData() == null) {
             // 登录失效
-            throw new NotLoggedInException();
+            exception(request,response,new NotLoggedInException());
+            return;
         }else{
             // token 有效
             operation(request,response,result.getData());
@@ -94,6 +102,31 @@ public class TokenSsoFilter extends CookieSsoFilter {
     public void operation(ServletRequest request, ServletResponse response,Permit permit ){
 
     }
+
+    /**
+     *   异常处理方法
+     *   用于子类重写，抛出等处理操作
+     * @param e  异常信息
+     */
+    protected void exception(ServletRequest request, ServletResponse response,RuntimeException e){
+        throw e;
+    }
+
+    /***
+     * 判断一个请求是否为AJAX请求,是则返回true
+     * @param request
+     * @return
+     */
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        String requestType = request.getHeader("X-Requested-With");
+        //如果requestType能拿到值，并且值为 XMLHttpRequest ,表示客户端的请求为异步请求，那自然是ajax请求了，反之如果为null,则是普通的请求
+        if(requestType == null){
+            return false;
+        }
+        return true;
+    }
+
+
 
 
 }

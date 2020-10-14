@@ -45,7 +45,7 @@ public class PermitController extends BaseController {
      */
     @RequestMapping("/remove")
     public Result<String> remove(String token){
-        log.info("[{}] permit manager : remove by token ",new Date());
+        log.info("[{}] permit manager : remove by token ， param [token]->[{}]",new Date(),token);
         verificationHandler.del(token);
         return new Result<>();
     }
