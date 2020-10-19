@@ -10,6 +10,8 @@ import cn.godk.sso.handler.VerificationHandler;
 import cn.godk.sso.handler.rule.DefaultRule;
 import cn.godk.sso.manager.DefaultSecurityManager;
 import cn.godk.sso.manager.SecurityManager;
+import cn.godk.sso.manager.permission.DefaultPermissionManager;
+import cn.godk.sso.manager.permission.PermissionManager;
 import cn.godk.sso.manager.service.DefaultServiceManager;
 import cn.godk.sso.manager.service.Service;
 import cn.godk.sso.manager.service.ServiceManager;
@@ -17,10 +19,14 @@ import cn.godk.sso.realm.DefaultUsernamePasswordRealm;
 import cn.godk.sso.realm.IUserService;
 import cn.godk.sso.realm.Realm;
 import cn.godk.sso.vo.CertificationInfo;
+import cn.godk.sso.vo.PermissionInfo;
+import com.google.common.collect.Maps;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 系统初始化
@@ -31,8 +37,12 @@ import javax.annotation.Resource;
  */
 @Component
 public class SystemInit {
-@Resource
+
+
+    @Resource
     private IUserService userService;
+    @Resource
+    private PermissionConf permissionConf;
     /**
      * service manager
      *
@@ -95,9 +105,21 @@ public class SystemInit {
      * @return
      */
     @Bean
-    public Realm realm(){
-        return new DefaultUsernamePasswordRealm(userService);
+    public Realm realm(PermissionManager permissionManager){
+        DefaultUsernamePasswordRealm defaultUsernamePasswordRealm = new DefaultUsernamePasswordRealm(userService);
+        defaultUsernamePasswordRealm.setPermission(true);
+        defaultUsernamePasswordRealm.setPermissionManager(permissionManager);
+        return defaultUsernamePasswordRealm;
     }
+
+    @Bean
+    public PermissionManager permissionManager()
+    {
+        Map<String,PermissionInfo> serviceRoles = permissionConf.getServiceRoles();
+        return new DefaultPermissionManager(new GuavaCacheManager<>(Guava.PERMISSION), serviceRoles);
+    }
+
+
 
 
 }

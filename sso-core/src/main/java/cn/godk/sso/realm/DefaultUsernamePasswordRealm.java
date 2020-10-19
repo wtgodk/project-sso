@@ -32,7 +32,7 @@ public class DefaultUsernamePasswordRealm extends AbstractUsernamePasswordRealm 
 
     @Override
     PermissionInfo authorize(String username) {
-        //TODO  权限相关搜索
-        return new PermissionInfo();
+        PermissionInfo permissionInfo = userService.queryUserPermissionByUsername(username);
+        return permissionInfo==null?new PermissionInfo(): permissionInfo;
     }
 }

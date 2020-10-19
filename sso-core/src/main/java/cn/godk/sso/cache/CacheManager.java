@@ -41,12 +41,12 @@ public interface CacheManager<T> {
     T delIfExist(String key);
 
     /**
-     * 更新 缓存
+     * 刷新 缓存
      *
      * @param key
      * @return
      */
-    T update(String key);
+    T refresh(String key);
 
     /**
      * 创建缓存

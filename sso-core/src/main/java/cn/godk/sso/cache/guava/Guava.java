@@ -8,6 +8,11 @@ package cn.godk.sso.cache.guava;
  * @create 2019-05-06  12:26
  */
 public enum Guava {
+
+    /**
+     *  权限信息缓存
+     */
+    PERMISSION,
     /**
      * 保存登录信息
      */

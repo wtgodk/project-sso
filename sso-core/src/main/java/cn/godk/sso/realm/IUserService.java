@@ -1,6 +1,7 @@
 package cn.godk.sso.realm;
 
 import cn.godk.sso.vo.LoginUser;
+import cn.godk.sso.vo.PermissionInfo;
 
 /**
  *
@@ -20,4 +21,12 @@ public interface IUserService {
      * @return
      */
     LoginUser queryUserByUsernameAndPassword(String username,String password);
+
+
+    /**
+     *    根据用户获取用户角色信息
+     * @param username 用户名
+     * @return
+     */
+    PermissionInfo queryUserPermissionByUsername(String username);
 }

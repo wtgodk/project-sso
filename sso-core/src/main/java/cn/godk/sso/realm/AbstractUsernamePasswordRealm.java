@@ -1,10 +1,8 @@
 package cn.godk.sso.realm;
 
-import cn.godk.sso.bean.Permit;
-import cn.godk.sso.cache.CacheManager;
 import cn.godk.sso.exception.AccountErrorLoginFailException;
 import cn.godk.sso.exception.DenyLoginFailException;
-import cn.godk.sso.manager.PermissionManager;
+import cn.godk.sso.manager.permission.PermissionManager;
 import cn.godk.sso.vo.CertificationInfo;
 import cn.godk.sso.vo.LoginUser;
 import cn.godk.sso.vo.PermissionInfo;
@@ -28,6 +26,11 @@ public abstract class AbstractUsernamePasswordRealm implements Realm {
      * 权限认证 开启
      */
     private boolean permission = false;
+
+    /**
+     *  权限严格校验，必须设置了service permission的服务才可以登录 {该参数仅在开启权限认证时生效}
+     */
+    private boolean forcePermissionVerify = false;
 
     /**
      *  服务登陆权限管理
@@ -58,12 +61,18 @@ public abstract class AbstractUsernamePasswordRealm implements Realm {
             Set<String> roles = permissionInfo.getRoles();
             // 是否可以登录该系统、目前仅使用角色进行管理，未进行详细的权限控制（感觉不太需要详细的权限控制，仅作登录限制即可）
             Set<String> rolesByAppId = permissionManager.getRolesByAppId(appId);
+
+            // TODO  可能需要加一个如果用户 roles为空时的处理
             if (rolesByAppId != null && rolesByAppId.size() > 0) {
                 rolesByAppId.retainAll(roles);
                 if (rolesByAppId.size() == 0) {
                     throw new DenyLoginFailException("The user does not have permission to log in to the system");
                 }
+            }else if(forcePermissionVerify){
+                throw new DenyLoginFailException("The user does not have permission to log in to the system");
             }
+
+
         } else if (loginUser == null) {
             throw new AccountErrorLoginFailException("Account password does not match");
         }

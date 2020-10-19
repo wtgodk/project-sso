@@ -69,7 +69,7 @@ public class GuavaCacheManager<T> implements CacheManager<T> {
     }
 
     @Override
-    public T update(String key) {
+    public T refresh(String key) {
         return null;
     }
 

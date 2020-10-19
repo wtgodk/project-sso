@@ -17,6 +17,22 @@ import java.util.Set;
 @Getter
 public class PermissionInfo {
 
+    public PermissionInfo(Set<String> roles) {
+        this.roles = roles;
+    }
+
+    public PermissionInfo() {
+    }
+
+    public PermissionInfo(String appId, Set<String> roles) {
+        this.appId = appId;
+        this.roles = roles;
+    }
+
+    /**
+     *  服务ID
+     */
+    private String appId;
 
     /**
      * 角色信息

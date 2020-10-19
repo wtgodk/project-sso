@@ -30,4 +30,10 @@ public class JdbcConfig {
      */
     private String loginCheck = "select * from user u where username = ? and password = ?";
 
+
+    /**
+     *  用户角色查询   must setting return field as role {@link cn.godk.sso.conf.constant.Role#ROLE_NAME}
+     */
+    private String roleQuery = "SELECT role_name as role FROM user_role LEFT JOIN USER ON `user`.userid = user_role.userid LEFT JOIN role on `role`.roleid = user_role.roleid where `user`.username = ?";
+
 }
