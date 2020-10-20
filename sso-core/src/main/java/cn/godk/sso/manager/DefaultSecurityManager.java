@@ -1,15 +1,9 @@
 package cn.godk.sso.manager;
 
 import cn.godk.sso.bean.Permit;
-import cn.godk.sso.cache.CacheManager;
-import cn.godk.sso.cache.guava.Guava;
-import cn.godk.sso.cache.guava.GuavaCacheManager;
-import cn.godk.sso.exception.LoginFailException;
 import cn.godk.sso.handler.VerificationHandler;
-import cn.godk.sso.manager.service.DefaultServiceManager;
 import cn.godk.sso.manager.service.ServiceManager;
 import cn.godk.sso.manager.user.UserManager;
-import cn.godk.sso.realm.DefaultUsernamePasswordRealm;
 import cn.godk.sso.realm.Realm;
 import cn.godk.sso.vo.CertificationInfo;
 import cn.godk.sso.vo.LoginUser;

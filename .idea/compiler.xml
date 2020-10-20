@@ -9,8 +9,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="sso-server" />
         <module name="sso-core" />
-        <module name="sso-common" />
         <module name="sso-client" />
+        <module name="sso-common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />

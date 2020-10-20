@@ -1,14 +1,13 @@
 package cn.godk.sso;
 
 import cn.godk.sso.cache.CacheManager;
-import cn.godk.sso.cache.guava.Guava;
+import cn.godk.sso.cache.Cache;
 import cn.godk.sso.cache.guava.GuavaCacheManager;
 import cn.godk.sso.manager.permission.DefaultPermissionManager;
 import cn.godk.sso.manager.permission.PermissionManager;
 import cn.godk.sso.vo.PermissionInfo;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -25,7 +24,7 @@ public class DefaultPermissionManagerTest {
 
     @Test
     public void testInit(){
-        CacheManager<PermissionInfo> cacheManager = new GuavaCacheManager<>(Guava.PERMISSION);
+        CacheManager<PermissionInfo> cacheManager = new GuavaCacheManager<>(Cache.PERMISSION);
         Map<String,PermissionInfo> map = Maps.newHashMap();
         Set<String> set1 =Sets.newHashSet(Arrays.asList("1", "2") );
         Set<String> set2 =Sets.newHashSet(Arrays.asList("3", "4") );

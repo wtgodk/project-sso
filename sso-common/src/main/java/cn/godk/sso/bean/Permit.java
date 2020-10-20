@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class Permit {
+public class Permit implements Serializable {
 
     /**
      * 通行证 唯一值

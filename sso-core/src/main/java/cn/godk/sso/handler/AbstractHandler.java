@@ -33,7 +33,7 @@ public abstract class AbstractHandler implements VerificationHandler {
     /**
      * token 失效时间
      */
-    private long timeout = 1000 * 30;
+    private long timeout = 1000 * 30 * 60;
 
     public AbstractHandler() {
         rule = new DefaultRule();

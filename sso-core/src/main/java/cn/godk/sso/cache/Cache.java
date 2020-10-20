@@ -1,4 +1,4 @@
-package cn.godk.sso.cache.guava;
+package cn.godk.sso.cache;
 
 /**
  * guava caches key  for get  cache
@@ -7,7 +7,7 @@ package cn.godk.sso.cache.guava;
  * @program aircraft
  * @create 2019-05-06  12:26
  */
-public enum Guava {
+public enum Cache {
 
     /**
      *  权限信息缓存

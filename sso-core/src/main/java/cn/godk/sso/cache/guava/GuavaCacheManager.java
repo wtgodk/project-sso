@@ -1,7 +1,7 @@
 package cn.godk.sso.cache.guava;
 
 import cn.godk.sso.cache.CacheManager;
-import com.google.common.cache.Cache;
+import cn.godk.sso.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import lombok.Getter;
@@ -24,10 +24,10 @@ public class GuavaCacheManager<T> implements CacheManager<T> {
 
     public static GuavaCache guavaCache = GuavaCache.getInstance();
     public Class<T> clazz;
-    private Guava guava;
+    private Cache guava;
 
-    public GuavaCacheManager(Guava guava) {
-        Cache<String, T> cache = CacheBuilder.newBuilder().maximumSize(100).build();
+    public GuavaCacheManager(Cache guava) {
+        com.google.common.cache.Cache cache = CacheBuilder.newBuilder().maximumSize(100).build();
         guavaCache.addCache(guava, cache);
         this.guava = guava;
     }
@@ -38,8 +38,8 @@ public class GuavaCacheManager<T> implements CacheManager<T> {
      * @param guava    缓存 key
      * @param listener 监听
      */
-    public GuavaCacheManager(Guava guava, RemovalListener<String, T> listener) {
-        Cache<String, T> cache = CacheBuilder.newBuilder().maximumSize(100).removalListener(listener).build();
+    public GuavaCacheManager(Cache guava, RemovalListener<String, T> listener) {
+        com.google.common.cache.Cache cache = CacheBuilder.newBuilder().maximumSize(100).removalListener(listener).build();
         guavaCache.addCache(guava, cache);
         this.guava = guava;
     }

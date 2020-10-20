@@ -3,7 +3,8 @@ package cn.godk.sso.conf;
 import cn.godk.sso.SsoLoginHelper;
 import cn.godk.sso.bean.Permit;
 import cn.godk.sso.cache.CacheManager;
-import cn.godk.sso.cache.guava.Guava;
+import cn.godk.sso.cache.Cache;
+import cn.godk.sso.cache.RedisCacheManager;
 import cn.godk.sso.cache.guava.GuavaCacheManager;
 import cn.godk.sso.handler.DefaultHandler;
 import cn.godk.sso.handler.VerificationHandler;
@@ -18,15 +19,13 @@ import cn.godk.sso.manager.service.ServiceManager;
 import cn.godk.sso.realm.DefaultUsernamePasswordRealm;
 import cn.godk.sso.realm.IUserService;
 import cn.godk.sso.realm.Realm;
-import cn.godk.sso.vo.CertificationInfo;
 import cn.godk.sso.vo.PermissionInfo;
-import com.google.common.collect.Maps;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 系统初始化
@@ -41,8 +40,15 @@ public class SystemInit {
 
     @Resource
     private IUserService userService;
+
     @Resource
     private PermissionConf permissionConf;
+
+    @Resource(name = "serviceRedisTemplate")
+    private RedisTemplate<String,Service> serviceRedisTemplate;
+
+    @Resource(name = "permitRedisTemplate")
+    private RedisTemplate<String,Permit> permitRedisTemplate;
     /**
      * service manager
      *
@@ -61,7 +67,7 @@ public class SystemInit {
      */
     @Bean
     public CacheManager<Service> serviceCacheManager() {
-        return new GuavaCacheManager<>(Guava.SERVICE);
+        return new RedisCacheManager<>(serviceRedisTemplate,Cache.SERVICE);
     }
 
     /**
@@ -71,9 +77,8 @@ public class SystemInit {
      */
     @Bean
     public CacheManager<Permit> tokenCacheManager() {
-        return new GuavaCacheManager<>(Guava.TOKEN);
+        return new RedisCacheManager<>(permitRedisTemplate,Cache.TOKEN);
     }
-
     /**
      *   Verification Handler for permit manager
      * @param tokenCacheManager
@@ -116,7 +121,7 @@ public class SystemInit {
     public PermissionManager permissionManager()
     {
         Map<String,PermissionInfo> serviceRoles = permissionConf.getServiceRoles();
-        return new DefaultPermissionManager(new GuavaCacheManager<>(Guava.PERMISSION), serviceRoles);
+        return new DefaultPermissionManager(new GuavaCacheManager<>(Cache.PERMISSION), serviceRoles);
     }
 
 

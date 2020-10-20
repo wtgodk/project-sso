@@ -1,6 +1,5 @@
 package cn.godk.sso.cache;
 
-import cn.godk.sso.cache.guava.Guava;
 import cn.godk.sso.cache.guava.GuavaCacheManager;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +13,7 @@ public class GuavaCacheManagerTest {
 
     @Test
     public void testGuava() {
-        GuavaCacheManager<String> guavaCacheManager = new GuavaCacheManager<>(Guava.TOKEN);
+        GuavaCacheManager<String> guavaCacheManager = new GuavaCacheManager<>(Cache.TOKEN);
         String test = guavaCacheManager.get("test");
         Assert.assertNull(test);
         String s = guavaCacheManager.create("test", "value", 100);

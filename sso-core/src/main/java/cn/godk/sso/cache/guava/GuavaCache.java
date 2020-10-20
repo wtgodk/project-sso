@@ -1,6 +1,6 @@
 package cn.godk.sso.cache.guava;
 
-import com.google.common.cache.Cache;
+import cn.godk.sso.cache.Cache;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class GuavaCache {
 
-    protected static Map<Guava, Cache> caches = null;
+    protected static Map<Cache, com.google.common.cache.Cache> caches = null;
     private static GuavaCache instance;
 
     private GuavaCache() {
@@ -44,7 +44,7 @@ public class GuavaCache {
      * @param key
      * @param cache
      */
-    public synchronized void addCache(Guava key, Cache cache) {
+    public synchronized void addCache(Cache key, com.google.common.cache.Cache cache) {
         caches.put(key, cache);
     }
 
@@ -54,7 +54,7 @@ public class GuavaCache {
      * @param key
      * @return
      */
-    public synchronized Cache getCache(Guava key) {
+    public synchronized com.google.common.cache.Cache getCache(Cache key) {
         return caches.get(key);
     }
 
@@ -66,7 +66,7 @@ public class GuavaCache {
      * @return
      * @throws ExecutionException
      */
-    public synchronized <T> T get(Object key, Guava guavaKey, Class<T> clazz) {
+    public synchronized <T> T get(Object key, Cache guavaKey, Class<T> clazz) {
         try {
             return getVal(key, guavaKey, clazz);
         } catch (Exception e) {
@@ -87,8 +87,8 @@ public class GuavaCache {
      * @param <T>
      * @return
      */
-    public synchronized <T> List<T> getAllValue(Guava guavaKey, Class<T> clazz){
-        Cache<Object, T> switchCache = getCache(guavaKey);
+    public synchronized <T> List<T> getAllValue(Cache guavaKey, Class<T> clazz){
+        com.google.common.cache.Cache<Object,T> switchCache = getCache(guavaKey);
         List<T> cache = Lists.newArrayList();
         ConcurrentMap<Object, T> cacheMap = switchCache.asMap();
         cacheMap.forEach((x,y)->{
@@ -105,8 +105,8 @@ public class GuavaCache {
      * @throws ExecutionException
      */
     @SuppressWarnings("unchecked")
-    private <T> T getVal(Object key, Guava guavaKey, Class<T> clazz) throws ExecutionException {
-        Cache<Object, T> switchCache = getCache(guavaKey);
+    private <T> T getVal(Object key, Cache guavaKey, Class<T> clazz) throws ExecutionException {
+        com.google.common.cache.Cache<Object,T> switchCache = getCache(guavaKey);
         T resultVal = switchCache.get(key, new Callable<T>() {
             @Override
             public T call() {
@@ -124,8 +124,8 @@ public class GuavaCache {
      * @param value
      * @return
      */
-    public synchronized <T> T set(Object key, T value, Guava guavaKey) {
-        Cache<Object, T> cache = getCache(guavaKey);
+    public synchronized <T> T set(Object key, T value, Cache guavaKey) {
+        com.google.common.cache.Cache cache = getCache(guavaKey);
         cache.put(key, value);
         return value;
     }
@@ -136,8 +136,8 @@ public class GuavaCache {
      *
      * @return
      */
-    public synchronized long size(Guava guavaKey) {
-        Cache<Object, Object> cache = getCache(guavaKey);
+    public synchronized long size(Cache guavaKey) {
+        com.google.common.cache.Cache cache = getCache(guavaKey);
         return cache.size();
     }
 
@@ -146,14 +146,14 @@ public class GuavaCache {
      *
      * @param key
      */
-    public synchronized void remove(Object key, Guava guavaKey) {
-        Cache<Object, Object> cache = getCache(guavaKey);
+    public synchronized void remove(Object key, Cache guavaKey) {
+        com.google.common.cache.Cache cache = getCache(guavaKey);
         cache.invalidate(key);
     }
 
 
-    public synchronized void removeIfExist(Object key, Guava guavaKey) {
-        Cache<Object, Object> cache = getCache(guavaKey);
+    public synchronized void removeIfExist(Object key, Cache guavaKey) {
+        com.google.common.cache.Cache cache = getCache(guavaKey);
         if (cache != null && key != null) {
             cache.invalidate(key);
         }
@@ -165,8 +165,8 @@ public class GuavaCache {
      *
      * @return
      */
-    public synchronized void removeAll(Guava guavaKey) {
-        Cache<Object, Object> cache = getCache(guavaKey);
+    public synchronized void removeAll(Cache guavaKey) {
+        com.google.common.cache.Cache cache = getCache(guavaKey);
         cache.invalidateAll();
     }
 

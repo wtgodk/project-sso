@@ -15,6 +15,12 @@ project:
         roles: ["管理员","普通用户"]
       service-2:
         roles: ["3","4"]
+  redis:
+    service:
+      database: 0
+    permit:
+      database: 1
+
 
 
 spring:
