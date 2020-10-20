@@ -81,17 +81,18 @@ public class GuavaCache {
     }
 
     /**
-     *   获取所有value值
+     * 获取所有value值
+     *
      * @param guavaKey
      * @param clazz
      * @param <T>
      * @return
      */
-    public synchronized <T> List<T> getAllValue(Cache guavaKey, Class<T> clazz){
-        com.google.common.cache.Cache<Object,T> switchCache = getCache(guavaKey);
+    public synchronized <T> List<T> getAllValue(Cache guavaKey, Class<T> clazz) {
+        com.google.common.cache.Cache<Object, T> switchCache = getCache(guavaKey);
         List<T> cache = Lists.newArrayList();
         ConcurrentMap<Object, T> cacheMap = switchCache.asMap();
-        cacheMap.forEach((x,y)->{
+        cacheMap.forEach((x, y) -> {
             cache.add(y);
         });
         return cache;
@@ -106,7 +107,7 @@ public class GuavaCache {
      */
     @SuppressWarnings("unchecked")
     private <T> T getVal(Object key, Cache guavaKey, Class<T> clazz) throws ExecutionException {
-        com.google.common.cache.Cache<Object,T> switchCache = getCache(guavaKey);
+        com.google.common.cache.Cache<Object, T> switchCache = getCache(guavaKey);
         T resultVal = switchCache.get(key, new Callable<T>() {
             @Override
             public T call() {

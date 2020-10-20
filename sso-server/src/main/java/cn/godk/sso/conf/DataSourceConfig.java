@@ -14,7 +14,8 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
- *  配置数据源,使用阿里Druid数据源
+ * 配置数据源,使用阿里Druid数据源
+ *
  * @author wt
  * @program cas-server
  * @create 2019-12-27  11:38
@@ -47,19 +48,19 @@ public class DataSourceConfig {
     private String password;
 
     /**
-     *  配置最大连接
+     * 配置最大连接
      */
     private int maxActive = 200;
     /**
-     *  配置初始连接
+     * 配置初始连接
      */
     private int initialSize = 20;
     /**
-     *   最小空闲连接
+     * 最小空闲连接
      */
     private int minIdle = 20;
     /**
-     *  链接等待超时时间
+     * 链接等待超时时间
      */
     private long maxWait = 60000L;
     /**
@@ -68,15 +69,17 @@ public class DataSourceConfig {
     private long timeBetweenEvictionRunsMillis = 60000L;
 
     /**
-     *  一个连接最小生存时间
+     * 一个连接最小生存时间
      */
     private long minEvictableIdleTimeMillis = 300000L;
+
     /**
      * 配置Druid数据源
+     *
      * @return
      * @throws SQLException
      */
-    @Bean(name="dataSource",destroyMethod="close",initMethod ="init" )
+    @Bean(name = "dataSource", destroyMethod = "close", initMethod = "init")
     public DataSource dataSource() {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName(driver);
@@ -109,7 +112,7 @@ public class DataSourceConfig {
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate(@Qualifier("dataSource") DataSource dataSource){
+    public JdbcTemplate jdbcTemplate(@Qualifier("dataSource") DataSource dataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource);
         return jdbcTemplate;

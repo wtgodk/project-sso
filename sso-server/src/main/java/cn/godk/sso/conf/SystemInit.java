@@ -2,8 +2,8 @@ package cn.godk.sso.conf;
 
 import cn.godk.sso.SsoLoginHelper;
 import cn.godk.sso.bean.Permit;
-import cn.godk.sso.cache.CacheManager;
 import cn.godk.sso.cache.Cache;
+import cn.godk.sso.cache.CacheManager;
 import cn.godk.sso.cache.RedisCacheManager;
 import cn.godk.sso.cache.guava.GuavaCacheManager;
 import cn.godk.sso.handler.DefaultHandler;
@@ -45,10 +45,11 @@ public class SystemInit {
     private PermissionConf permissionConf;
 
     @Resource(name = "serviceRedisTemplate")
-    private RedisTemplate<String,Service> serviceRedisTemplate;
+    private RedisTemplate<String, Service> serviceRedisTemplate;
 
     @Resource(name = "permitRedisTemplate")
-    private RedisTemplate<String,Permit> permitRedisTemplate;
+    private RedisTemplate<String, Permit> permitRedisTemplate;
+
     /**
      * service manager
      *
@@ -67,7 +68,7 @@ public class SystemInit {
      */
     @Bean
     public CacheManager<Service> serviceCacheManager() {
-        return new RedisCacheManager<>(serviceRedisTemplate,Cache.SERVICE);
+        return new RedisCacheManager<>(serviceRedisTemplate, Cache.SERVICE);
     }
 
     /**
@@ -77,20 +78,23 @@ public class SystemInit {
      */
     @Bean
     public CacheManager<Permit> tokenCacheManager() {
-        return new RedisCacheManager<>(permitRedisTemplate,Cache.TOKEN);
+        return new RedisCacheManager<>(permitRedisTemplate, Cache.TOKEN);
     }
+
     /**
-     *   Verification Handler for permit manager
+     * Verification Handler for permit manager
+     *
      * @param tokenCacheManager
      * @return
      */
     @Bean
-    public VerificationHandler verificationHandler(CacheManager<Permit> tokenCacheManager){
+    public VerificationHandler verificationHandler(CacheManager<Permit> tokenCacheManager) {
         DefaultHandler defaultHandler = new DefaultHandler();
         defaultHandler.setRule(new DefaultRule());
         defaultHandler.setCacheManager(tokenCacheManager);
         return defaultHandler;
     }
+
     /**
      * security manager
      *
@@ -98,19 +102,20 @@ public class SystemInit {
      * @return
      */
     @Bean
-    public SecurityManager securityManager(ServiceManager serviceManager,VerificationHandler verificationHandler,Realm realm) {
-        DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager(serviceManager,realm);
+    public SecurityManager securityManager(ServiceManager serviceManager, VerificationHandler verificationHandler, Realm realm) {
+        DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager(serviceManager, realm);
         defaultSecurityManager.setVerificationHandler(verificationHandler);
         SsoLoginHelper.setSecurityManager(defaultSecurityManager);
         return defaultSecurityManager;
     }
 
     /**
-     *   用户信息验证、权限信息获取等操作
+     * 用户信息验证、权限信息获取等操作
+     *
      * @return
      */
     @Bean
-    public Realm realm(PermissionManager permissionManager){
+    public Realm realm(PermissionManager permissionManager) {
         DefaultUsernamePasswordRealm defaultUsernamePasswordRealm = new DefaultUsernamePasswordRealm(userService);
         defaultUsernamePasswordRealm.setPermission(true);
         defaultUsernamePasswordRealm.setPermissionManager(permissionManager);
@@ -118,13 +123,10 @@ public class SystemInit {
     }
 
     @Bean
-    public PermissionManager permissionManager()
-    {
-        Map<String,PermissionInfo> serviceRoles = permissionConf.getServiceRoles();
+    public PermissionManager permissionManager() {
+        Map<String, PermissionInfo> serviceRoles = permissionConf.getServiceRoles();
         return new DefaultPermissionManager(new GuavaCacheManager<>(Cache.PERMISSION), serviceRoles);
     }
-
-
 
 
 }

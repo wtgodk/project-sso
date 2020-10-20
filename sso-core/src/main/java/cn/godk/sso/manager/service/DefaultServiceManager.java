@@ -41,7 +41,7 @@ public class DefaultServiceManager extends AbstractServiceManager {
 
     @Override
     public List<Service> getService() {
-         return getCacheManager().all();
+        return getCacheManager().all();
     }
 
 
@@ -71,7 +71,7 @@ public class DefaultServiceManager extends AbstractServiceManager {
             log.debug("[{}] request token is empty ,can not find service , [permit]->[{}]", new Date(), permit.toString());
         }
         Service service = getService(permit);
-        if (service == null ) {
+        if (service == null) {
             service = new Service();
             service.setType(permit.getType());
             service.setUsername(permit.getUsername());

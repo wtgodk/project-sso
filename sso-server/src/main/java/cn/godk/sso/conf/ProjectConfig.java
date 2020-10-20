@@ -1,6 +1,5 @@
 package cn.godk.sso.conf;
 
-import cn.godk.sso.vo.PermissionInfo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,28 +8,27 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import java.util.Map;
-
 /**
- * 服务权限信息
+ * 系统配置
  *
  * @author wt
  * @program project-sso
- * @create 2020-10-19  14:20
+ * @create 2020-10-20  13:44
  */
+
 @Getter
 @Setter
 @ToString
 @Configuration
-@EnableConfigurationProperties(JdbcConfig.class)
+@EnableConfigurationProperties(ProjectConfig.class)
 @PropertySource("classpath:application.yml")
-@ConfigurationProperties(prefix = "project.permission")
-public class PermissionConf {
+@ConfigurationProperties(prefix = "project.cookie")
+public class ProjectConfig {
 
     /**
-     * 权限信息初始化配置
+     * cookie 名称
      */
-    private Map<String, PermissionInfo> serviceRoles;
+    private String cookieName = "sso_cookie_name";
 
 
 }

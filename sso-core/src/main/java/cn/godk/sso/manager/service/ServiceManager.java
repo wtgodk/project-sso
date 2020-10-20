@@ -15,13 +15,15 @@ public interface ServiceManager {
 
     /**
      * 获取 当前service 是否存在
+     *
      * @param permit 参数
      * @return
      */
     Service getService(Permit permit);
 
     /**
-     *  获取所有在线service
+     * 获取所有在线service
+     *
      * @return
      */
     List<Service> getService();

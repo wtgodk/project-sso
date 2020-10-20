@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +15,7 @@ import java.util.Set;
  */
 @Setter
 @Getter
-public class Service  implements Serializable {
+public class Service implements Serializable {
 
 
     /**
@@ -32,15 +31,13 @@ public class Service  implements Serializable {
      */
     private String username;
     /**
-     *  使用的 token内容
+     * 使用的 token内容
      */
     private String token;
 
 
     public Service() {
     }
-
-
 
 
 }

@@ -8,11 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Set;
 
 /**
+ * 权限管理
  *
- *  权限管理
  * @author wt
  * @program project-sso
  * @create 2020-10-19  13:24
@@ -23,28 +22,25 @@ import java.util.Set;
 public class DefaultPermissionManager extends AbstractPermissionManager {
 
 
+    private Map<String, PermissionInfo> permissionManagerMap;
+
     public DefaultPermissionManager(CacheManager<PermissionInfo> cacheManager, Map<String, PermissionInfo> permissionManagerMap) {
         super(cacheManager);
         this.permissionManagerMap = permissionManagerMap;
         initServicePermission();
     }
-    private Map<String,PermissionInfo> permissionManagerMap;
 
     @Override
     public void initServicePermission() {
-        log.info("[{}] init service permission start",new Date());
-        if(permissionManagerMap!=null && permissionManagerMap.size()>0){
-            permissionManagerMap.forEach((k,v)->{
+        log.info("[{}] init service permission start", new Date());
+        if (permissionManagerMap != null && permissionManagerMap.size() > 0) {
+            permissionManagerMap.forEach((k, v) -> {
                 v.setAppId(k);
-                getCacheManager().create(k,v,-1);
+                getCacheManager().create(k, v, -1);
             });
         }
-        log.info("[{}] init service permission end",new Date());
+        log.info("[{}] init service permission end", new Date());
     }
-
-
-
-
 
 
 }

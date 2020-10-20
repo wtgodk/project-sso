@@ -1,7 +1,6 @@
 package cn.godk.sso.conf.redis;
 
 import cn.godk.sso.bean.Permit;
-import cn.godk.sso.manager.service.Service;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +18,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import javax.annotation.Resource;
 
 /**
+ * permit redis template
  *
- *  permit redis template
  * @author wt
  * @program project-sso
  * @create 2020-10-20  10:55
@@ -33,12 +32,11 @@ import javax.annotation.Resource;
 @EnableConfigurationProperties(PermitJedisTemplate.class)
 @PropertySource("classpath:application.yml")
 @ConfigurationProperties(prefix = "project.redis.permit")
-public class PermitJedisTemplate extends  Jedis{
+public class PermitJedisTemplate extends Jedis {
 
 
     @Resource
     private RedisConf redisConf;
-
 
 
     @Override
@@ -75,9 +73,9 @@ public class PermitJedisTemplate extends  Jedis{
 
     @Bean(name = "permitRedisTemplate")
     public RedisTemplate<String, Permit> permitRedisTemplate() {
-        RedisTemplate<String,Permit> template = new RedisTemplate<>();
+        RedisTemplate<String, Permit> template = new RedisTemplate<>();
         template.setConnectionFactory(redisPermitConnectionFactory());
-        redisConf.setSerializer(template,new StringRedisSerializer(),new Jackson2JsonRedisSerializer<>(Permit.class));
+        redisConf.setSerializer(template, new StringRedisSerializer(), new Jackson2JsonRedisSerializer<>(Permit.class));
         template.afterPropertiesSet();
         return template;
     }

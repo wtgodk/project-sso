@@ -38,7 +38,7 @@
         cn.godk.sso.LogoutHelper.logout(HttpServletRequest request,String path);
 2.  App集成（使用客户端登陆页面，java-Demo）
     
-    扩展TokenSsoFilter.java过滤器重写以下方法（非强制，该方式为了在全局异常处理可以捕获到抛出的异常）
+   - 扩展TokenSsoFilter.java过滤器重写以下方法（非强制，该方式为了在全局异常处理可以捕获到抛出的异常）
     
     
        public class CustomTokenSsoFilter extends TokenSsoFilter {
@@ -57,10 +57,9 @@
        }
 
 
+   - 配置过滤器(该过滤器仅会拦截ajax请求，对于页面请求不会拦截) 
 
-    配置过滤器(该过滤器仅会拦截ajax请求，对于页面请求不会拦截)
-    
-    
+
         @Autowired
         @Qualifier("handlerExceptionResolver")
         private HandlerExceptionResolver resolver;
@@ -89,7 +88,7 @@
         }
 
  
-    登录页面处理（java-web-html）
+   - 登录页面处理（java-web-html）
         
         
         <script type="application/javascript" charset="UTF-8">
@@ -112,7 +111,7 @@
           })
 
 
-    全局ajax控制：
+   - 全局ajax控制：
             
             
         <script type="application/javascript" charset="UTF-8">
@@ -129,3 +128,9 @@
             });
     
         </script>
+   - 退出登录：
+        
+          /**
+                *  @param request HttpServletRequest 清空session，并且清除 token
+                */
+                cn.godk.sso.LogoutHelper.logout(HttpServletRequest request);

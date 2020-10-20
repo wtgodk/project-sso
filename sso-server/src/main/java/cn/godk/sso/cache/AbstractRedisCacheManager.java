@@ -2,7 +2,6 @@ package cn.godk.sso.cache;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,7 @@ public abstract class AbstractRedisCacheManager<T> implements IRedisCacheManager
 
     private RedisTemplate<String, T> template;
     /**
-     *   key 前缀，可以用于区别不同类型缓存
+     * key 前缀，可以用于区别不同类型缓存
      */
     private String keyPrefix = "";
 
@@ -44,9 +43,9 @@ public abstract class AbstractRedisCacheManager<T> implements IRedisCacheManager
     }
 
     @Override
-    public T create(String key, T val,long expired) {
-   template.opsForValue().set(getKey(key), val,expired, TimeUnit.MILLISECONDS);
-   return val;
+    public T create(String key, T val, long expired) {
+        template.opsForValue().set(getKey(key), val, expired, TimeUnit.MILLISECONDS);
+        return val;
     }
 
 
@@ -72,16 +71,15 @@ public abstract class AbstractRedisCacheManager<T> implements IRedisCacheManager
 
     @Override
     public Set<String> keys(String keys) {
-       return  template.keys(keys);
+        return template.keys(keys);
 
     }
 
     @Override
     public T delIfExist(String key) {
-        String newKey = getKey(key);
-        T t = get(newKey);
-        if(t!=null){
-            del(newKey);
+        T t = get(key);
+        if (t != null) {
+            del(key);
             return t;
         }
         return null;
@@ -89,14 +87,13 @@ public abstract class AbstractRedisCacheManager<T> implements IRedisCacheManager
 
     @Override
     public T refresh(String key) {
-        String newKey = getKey(key);
-        return get(newKey);
+        return get(key);
     }
 
     @Override
     public List<T> mGet(String... keys) {
         List<String> keyList = Lists.newArrayList();
-        if(keys!=null && keys.length>0){
+        if (keys != null && keys.length > 0) {
             for (String key : keys) {
                 keyList.add(getKey(key));
             }
@@ -107,7 +104,6 @@ public abstract class AbstractRedisCacheManager<T> implements IRedisCacheManager
     @Override
     public Map<String, T> mGet(List<String> keys) {
         List<Object> objects = template.executePipelined(new RedisCallback<String>() {
-            @NotNull
             @Override
             public String doInRedis(RedisConnection connection) throws DataAccessException {
                 for (String key : keys) {
@@ -123,7 +119,7 @@ public abstract class AbstractRedisCacheManager<T> implements IRedisCacheManager
         Map<String, T> map = Maps.newHashMap();
         for (int i = 0; i < keys.size(); i++) {
             String label = keys.get(i);
-            T value =  (T)objects.get(i);
+            T value = (T) objects.get(i);
             if (value == null) {
                 continue;
             }
@@ -141,7 +137,7 @@ public abstract class AbstractRedisCacheManager<T> implements IRedisCacheManager
                 Set<T> binaryKeys = new HashSet<>();
                 Cursor<byte[]> cursor = connection.scan(new ScanOptions.ScanOptionsBuilder().match(match).count(count).build());
                 while (cursor.hasNext()) {
-                    binaryKeys.add((T)cursor.next());
+                    binaryKeys.add((T) cursor.next());
                 }
                 return binaryKeys;
             }
@@ -150,13 +146,14 @@ public abstract class AbstractRedisCacheManager<T> implements IRedisCacheManager
     }
 
     /**
-     *   为key 添加 key prefix
-     * @param key  原始 key
+     * 为key 添加 key prefix
+     *
+     * @param key 原始 key
      * @return
      */
-    protected String getKey(String key){
+    protected String getKey(String key) {
 
-        return keyPrefix + (key==null? "": key.trim());
+        return keyPrefix + (key == null ? "" : key.trim());
 
     }
 

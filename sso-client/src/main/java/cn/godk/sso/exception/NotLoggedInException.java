@@ -1,8 +1,8 @@
 package cn.godk.sso.exception;
 
 /**
+ * not logged in exception
  *
- *  not logged in exception
  * @author wt
  * @program project-sso
  * @create 2020-09-27  14:28

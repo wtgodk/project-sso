@@ -23,32 +23,6 @@ import java.util.Date;
 public class GlobalDefaultExceptionHandler {
 
     /**
-     * 声明要捕获的异常
-     *
-     * @param request request
-     * @param e  异常
-     * @return
-     */
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public Object defaultExceptionHandler(HttpServletRequest request, Exception e) {
-        String uri = request.getRequestURI();
-        //未知错误
-        Result<?> result;
-        if (e instanceof LoginFailException) {
-            result = new Result<>(2, e.getMessage(), "fail");
-            log.info(new Date() + "login fail " + e);
-        } else if (e instanceof RuntimeException) {
-            result = new Result<>(1, "exception: " + e, null);
-            setLogger(e, "EXCEPTION:", uri);
-        } else {
-            result = new Result<>(-1, "exception: " + e, null);
-            setLogger(e, "EXCEPTION:", uri);
-        }
-        return result;
-    }
-
-    /**
      * 日志  日志打印详细 异常信息
      *
      * @param e       异常信息
@@ -77,6 +51,32 @@ public class GlobalDefaultExceptionHandler {
             }
         }
         log.error(new Date() + content + ":\n request url：" + requestUrl + "\n Exception Info：" + sw.toString());
+    }
+
+    /**
+     * 声明要捕获的异常
+     *
+     * @param request request
+     * @param e       异常
+     * @return
+     */
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public Object defaultExceptionHandler(HttpServletRequest request, Exception e) {
+        String uri = request.getRequestURI();
+        //未知错误
+        Result<?> result;
+        if (e instanceof LoginFailException) {
+            result = new Result<>(2, e.getMessage(), "fail");
+            log.info(new Date() + "login fail " + e);
+        } else if (e instanceof RuntimeException) {
+            result = new Result<>(1, "exception: " + e, null);
+            setLogger(e, "EXCEPTION:", uri);
+        } else {
+            result = new Result<>(-1, "exception: " + e, null);
+            setLogger(e, "EXCEPTION:", uri);
+        }
+        return result;
     }
 
 

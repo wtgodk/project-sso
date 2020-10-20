@@ -5,14 +5,15 @@ import cn.godk.sso.bean.Permit;
 import cn.godk.sso.bean.result.Result;
 import cn.godk.sso.cookie.CookieUtils;
 import cn.godk.sso.utils.EncodeUtils;
-import cn.godk.sso.utils.HttpUtil;
-import com.alibaba.fastjson.TypeReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -40,13 +41,11 @@ public class CookieSsoFilter extends AbstractSsoFilter {
     private boolean crossDomain = false;
 
 
-
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        if(greenLight(req.getServletPath())){
+        if (greenLight(req.getServletPath())) {
             chain.doFilter(req, res);
             return;
         }
@@ -80,12 +79,12 @@ public class CookieSsoFilter extends AbstractSsoFilter {
 
     /**
      * 客户端无法获取到 服务端 cookie时使用该方法。（跨域）
-     *
-     *
-     *   获取 session中是否有token信息如果有说明该系统登陆过，如果没有说明没有登陆过，
-     *   尝试获取 service_ticket，如果存在则加入session中key信息，如果不存在跳转到登陆页面
-     *
-     *   该实现并不完美，存在较多问题。
+     * <p>
+     * <p>
+     * 获取 session中是否有token信息如果有说明该系统登陆过，如果没有说明没有登陆过，
+     * 尝试获取 service_ticket，如果存在则加入session中key信息，如果不存在跳转到登陆页面
+     * <p>
+     * 该实现并不完美，存在较多问题。
      *
      * @param req
      * @param res

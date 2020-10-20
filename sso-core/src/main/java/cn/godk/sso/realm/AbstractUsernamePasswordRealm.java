@@ -28,12 +28,12 @@ public abstract class AbstractUsernamePasswordRealm implements Realm {
     private boolean permission = false;
 
     /**
-     *  权限严格校验，必须设置了service permission的服务才可以登录 {该参数仅在开启权限认证时生效}
+     * 权限严格校验，必须设置了service permission的服务才可以登录 {该参数仅在开启权限认证时生效}
      */
     private boolean forcePermissionVerify = false;
 
     /**
-     *  服务登陆权限管理
+     * 服务登陆权限管理
      */
     private PermissionManager permissionManager;
 
@@ -68,7 +68,7 @@ public abstract class AbstractUsernamePasswordRealm implements Realm {
                 if (rolesByAppId.size() == 0) {
                     throw new DenyLoginFailException("The user does not have permission to log in to the system");
                 }
-            }else if(forcePermissionVerify){
+            } else if (forcePermissionVerify) {
                 throw new DenyLoginFailException("The user does not have permission to log in to the system");
             }
 

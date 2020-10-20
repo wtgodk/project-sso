@@ -26,6 +26,7 @@ public class CertificationInfo {
      * 用户详细信息
      */
     private LoginUser loginUser;
+
     public CertificationInfo(String username, String password, LoginUser loginUser) {
         this.username = username;
         this.password = password;

@@ -27,7 +27,7 @@ import java.util.Date;
 public class DefaultSecurityManager implements SecurityManager {
 
     /**
-     *  service manager
+     * service manager
      */
     private ServiceManager serviceManager;
     /**
@@ -35,13 +35,13 @@ public class DefaultSecurityManager implements SecurityManager {
      */
     private VerificationHandler verificationHandler;
     /**
-     *  在线用户缓存
+     * 在线用户缓存
      */
     private UserManager userManager;
     /**
      * 自定义验证方法 插入
      */
-    private Realm realm ;
+    private Realm realm;
 
 
     public DefaultSecurityManager(ServiceManager serviceManager, Realm realm) {
@@ -59,13 +59,13 @@ public class DefaultSecurityManager implements SecurityManager {
         // 加一个 permit 类型
         serviceManager.updateService(permit, appId);
 
-    //    userManager.create(loginUser.getUsername(),permit);
+        //    userManager.create(loginUser.getUsername(),permit);
         return permit;
     }
 
     @Override
     public void logout(String token, String appId) {
-        log.info("[{}] securityManager logout operation , param [token,appId]->[{},{}]",new Date(),token,appId);
+        log.info("[{}] securityManager logout operation , param [token,appId]->[{},{}]", new Date(), token, appId);
         verificationHandler.del(token);
         serviceManager.delByToken(token);
     }

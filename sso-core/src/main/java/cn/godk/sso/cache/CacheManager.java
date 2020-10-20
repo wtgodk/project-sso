@@ -20,10 +20,11 @@ public interface CacheManager<T> {
     T get(String key);
 
     /**
-     *   获取缓存所有内容
+     * 获取缓存所有内容
+     *
      * @return
      */
-   List<T> all();
+    List<T> all();
 
     /**
      * 删除缓存

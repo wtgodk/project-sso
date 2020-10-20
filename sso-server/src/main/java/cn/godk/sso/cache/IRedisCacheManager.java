@@ -5,9 +5,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * redis 缓存
  *
- *
- *  redis 缓存
  * @author wt
  * @program project-sso
  * @create 2020-10-20  10:02
@@ -39,12 +38,13 @@ public interface IRedisCacheManager<T> extends CacheManager<T> {
     Map<String, T> mGet(List<String> keys);
 
     /**
-     *  清空缓存
+     * 清空缓存
      */
-     void clear();
+    void clear();
 
     /**
-     *  缓存条数统计
+     * 缓存条数统计
+     *
      * @return
      */
     long size();

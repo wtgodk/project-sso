@@ -22,7 +22,8 @@ public interface VerificationHandler {
     Permit get(String key);
 
     /**
-     *   获取缓存中的token
+     * 获取缓存中的token
+     *
      * @return
      */
     List<Permit> get();

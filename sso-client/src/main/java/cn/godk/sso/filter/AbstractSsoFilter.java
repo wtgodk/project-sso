@@ -94,19 +94,21 @@ public abstract class AbstractSsoFilter extends HttpServlet implements Filter {
     protected Result<Permit> check(String token) {
         Permit permit = new Permit(token);
         permit.setAppId(ParamStore.appId);
-        return HttpUtil.doPostJson(ParamStore.ssoServer+ "/check", permit, new TypeReference<Result<Permit>>() {});
+        return HttpUtil.doPostJson(ParamStore.ssoServer + "/check", permit, new TypeReference<Result<Permit>>() {
+        });
 
     }
 
     /**
-     *   放行路径
-     * @param servletPath  请求路径
+     * 放行路径
+     *
+     * @param servletPath 请求路径
      * @return
      */
-    protected boolean greenLight(String servletPath){
+    protected boolean greenLight(String servletPath) {
         // excluded path check
-        if (ParamStore.excludedPaths!=null && ParamStore.excludedPaths.trim().length()>0) {
-            for (String excludedPath:ParamStore.excludedPaths.split(",")) {
+        if (ParamStore.excludedPaths != null && ParamStore.excludedPaths.trim().length() > 0) {
+            for (String excludedPath : ParamStore.excludedPaths.split(",")) {
                 String uriPattern = excludedPath.trim();
                 // 支持ANT表达式
                 if (antPathMatcher.match(uriPattern, servletPath)) {

@@ -34,7 +34,7 @@ public class Result<T> {
     }
 
     public Result() {
-        this.code=0;
+        this.code = 0;
         this.message = "SUCCESS";
     }
 

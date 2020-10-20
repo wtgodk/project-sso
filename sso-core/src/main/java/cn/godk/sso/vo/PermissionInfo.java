@@ -17,6 +17,15 @@ import java.util.Set;
 @Getter
 public class PermissionInfo {
 
+    /**
+     * 服务ID
+     */
+    private String appId;
+    /**
+     * 角色信息
+     */
+    private Set<String> roles = Sets.newHashSet();
+
     public PermissionInfo(Set<String> roles) {
         this.roles = roles;
     }
@@ -28,14 +37,4 @@ public class PermissionInfo {
         this.appId = appId;
         this.roles = roles;
     }
-
-    /**
-     *  服务ID
-     */
-    private String appId;
-
-    /**
-     * 角色信息
-     */
-    private Set<String> roles = Sets.newHashSet();
 }

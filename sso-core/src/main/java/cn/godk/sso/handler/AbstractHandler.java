@@ -42,10 +42,12 @@ public abstract class AbstractHandler implements VerificationHandler {
     public AbstractHandler(Rule rule) {
         this.rule = rule;
     }
+
     public AbstractHandler(CacheManager<Permit> cacheManager, Rule rule) {
         this(rule);
         this.cacheManager = cacheManager;
     }
+
     public AbstractHandler(CacheManager<Permit> cacheManager) {
         this();
         this.cacheManager = cacheManager;

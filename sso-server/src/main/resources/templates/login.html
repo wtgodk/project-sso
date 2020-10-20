@@ -8,14 +8,14 @@
 
 
 <div>
-    <form method="post" action="/check_login">
-        <input type="hidden" th:name="appId" th:value="${appId}">
-        <input type="hidden" th:name="backUrl" th:value="${backUrl}">
+    <form action="/check_login" method="post">
+        <input th:name="appId" th:value="${appId}" type="hidden">
+        <input th:name="backUrl" th:value="${backUrl}" type="hidden">
 
-        <label >username</label>
-        <input  type="text" name="username">
+        <label>username</label>
+        <input name="username" type="text">
         <label>password</label>
-        <input type="password" name="password">
+        <input name="password" type="password">
 
         <input type="submit" value="login">
         <label th:text="${msg}"></label>

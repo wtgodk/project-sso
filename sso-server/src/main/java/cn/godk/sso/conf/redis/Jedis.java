@@ -13,7 +13,6 @@ import lombok.Setter;
 public class Jedis {
 
 
-
     private int database = 0;
 
     private String host = "127.0.0.1";
@@ -22,5 +21,5 @@ public class Jedis {
 
     private String password;
 
-    private int timeout ;
+    private int timeout;
 }

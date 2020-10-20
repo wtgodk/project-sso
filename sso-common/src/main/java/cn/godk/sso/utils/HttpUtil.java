@@ -18,7 +18,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -103,23 +102,24 @@ public class HttpUtil {
     }
 
     /**
-     *   post 请求  请求头携带参数 （非json格式）
+     * post 请求  请求头携带参数 （非json格式）
+     *
      * @param url
      * @param param
      * @param type
      * @param <T>
      * @return
      */
-    public static <T> T doPost(String url, Map<String,String> param, TypeReference<T> type) {
+    public static <T> T doPost(String url, Map<String, String> param, TypeReference<T> type) {
         CloseableHttpClient httpclient = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(url);
         CloseableHttpResponse response = null;
         try {
             List<NameValuePair> list = new ArrayList<NameValuePair>();
             Iterator<Map.Entry<String, String>> iterator = param.entrySet().iterator();
-            while(iterator.hasNext()){
-                Map.Entry<String,String> elem =  iterator.next();
-                list.add(new BasicNameValuePair(elem.getKey(),elem.getValue()));
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> elem = iterator.next();
+                list.add(new BasicNameValuePair(elem.getKey(), elem.getValue()));
             }
             HttpEntity entity = new UrlEncodedFormEntity(list, "UTF-8");
             post.setEntity(entity);

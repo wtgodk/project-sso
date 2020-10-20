@@ -10,7 +10,7 @@ package cn.godk.sso.cache;
 public enum Cache {
 
     /**
-     *  权限信息缓存
+     * 权限信息缓存
      */
     PERMISSION,
     /**

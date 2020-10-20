@@ -2,7 +2,6 @@ package cn.godk.sso.manager.user;
 
 import cn.godk.sso.bean.Permit;
 import cn.godk.sso.cache.CacheManager;
-import cn.godk.sso.vo.LoginUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,7 +38,7 @@ public abstract class AbstractUserManager implements UserManager {
 
     @Override
     public void create(String username, Permit permit) {
-        cacheManager.create(username,permit,-1);
+        cacheManager.create(username, permit, -1);
     }
 
     @Override

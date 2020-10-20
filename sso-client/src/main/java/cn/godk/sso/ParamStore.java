@@ -2,11 +2,14 @@ package cn.godk.sso;
 
 /**
  * 参数仓库 地址
+ *
  * @author wt
  * @program project-sso
  * @create 2020-10-13  10:49
  */
 public class ParamStore {
+
+    public static String tokenKey;
     /**
      * 服务ID
      */

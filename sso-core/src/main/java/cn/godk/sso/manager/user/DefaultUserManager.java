@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *  在线用户管理
+ * 在线用户管理
+ *
  * @author wt
  * @program project-sso
  * @create 2020-09-27  15:53

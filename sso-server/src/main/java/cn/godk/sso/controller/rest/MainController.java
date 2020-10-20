@@ -22,22 +22,24 @@ public class MainController {
 
     /**
      * 登陆验证方法
+     *
      * @param username 用户名 TRUE
      * @param password 密码 TRUE
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Result<Permit> login(String appId, String username, String password) {
-        log.info("[{}] <API> username password information check ,param [appId,username,password]->[{},{},{}]", new Date(), appId,username, password);
-        Permit permit = SsoLoginHelper.login(appId,username,password, Permit.Type.token);
-         if(permit==null){
-             return new Result<>(1,null,"fail");
-         }
+        log.info("[{}] <API> username password information check ,param [appId,username,password]->[{},{},{}]", new Date(), appId, username, password);
+        Permit permit = SsoLoginHelper.login(appId, username, password, Permit.Type.token);
+        if (permit == null) {
+            return new Result<>(1, null, "fail");
+        }
         return new Result<>(permit);
     }
 
     /**
      * 登陆状态校验
+     *
      * @param permit token信息 {@link Permit}
      * @return
      */
@@ -50,14 +52,15 @@ public class MainController {
 
     /**
      * 系统登出
+     *
      * @param appId 系统唯一ID  TRUE
      * @param token 登录状态信息token TRUE
      * @return
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/destroy", method = RequestMethod.POST)
     public Result<Permit> logout(@RequestParam(name = "appId") String appId, String token) {
         log.info("[{}] <API> system logout ,param [appId,token]->[{},{}]", new Date(), appId, token);
-        SsoLoginHelper.logout(token,appId);
+        SsoLoginHelper.logout(token, appId);
         return new Result<>();
     }
 

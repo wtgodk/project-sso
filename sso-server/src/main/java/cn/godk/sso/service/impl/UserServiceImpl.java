@@ -1,7 +1,6 @@
 package cn.godk.sso.service.impl;
 
 import cn.godk.sso.conf.JdbcConfig;
-import cn.godk.sso.conf.PermissionConf;
 import cn.godk.sso.conf.constant.Role;
 import cn.godk.sso.dao.UserRepository;
 import cn.godk.sso.realm.IUserService;
@@ -18,9 +17,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * user service interface impl
  *
- *
- *   user service interface impl
  * @author wt
  * @program project-sso
  * @create 2020-09-27  09:32
@@ -38,27 +36,27 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public LoginUser queryUserByUsernameAndPassword(String username, String password) {
-        log.debug("[{}] user service interface : queryUserByUsernameAndPassword , param [username,password]->[{},{}]",new Date(),username,password);
+        log.debug("[{}] user service interface : queryUserByUsernameAndPassword , param [username,password]->[{},{}]", new Date(), username, password);
         String loginCheck = jdbcConfig.getLoginCheck();
         Map<String, Object> userInfo = userRepository.queryForMap(loginCheck, username, password);
-        if(userInfo ==null){
+        if (userInfo == null) {
             return null;
         }
-        return  new LoginUser(username,userInfo);
+        return new LoginUser(username, userInfo);
     }
 
     @Override
     public PermissionInfo queryUserPermissionByUsername(String username) {
-        log.debug("[{}] user service interface : queryUserPermissionByUsername , param [username]->[{}]",new Date(),username);
+        log.debug("[{}] user service interface : queryUserPermissionByUsername , param [username]->[{}]", new Date(), username);
         String roleQuery = jdbcConfig.getRoleQuery();
         List<Map<String, Object>> roleMapList = userRepository.queryForList(roleQuery, username);
         PermissionInfo permissionInfo = new PermissionInfo();
-        if(roleMapList!=null &&roleMapList.size()>0){
+        if (roleMapList != null && roleMapList.size() > 0) {
             Set<String> roles = permissionInfo.getRoles();
             for (Map<String, Object> roleMap : roleMapList) {
-                if(roleMap!=null){
-                    String role = (String)roleMap.get(Role.ROLE_NAME);
-                    if(StringUtils.isNotBlank(role)){
+                if (roleMap != null) {
+                    String role = (String) roleMap.get(Role.ROLE_NAME);
+                    if (StringUtils.isNotBlank(role)) {
                         roles.add(role);
                     }
                 }

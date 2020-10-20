@@ -1,7 +1,7 @@
 package cn.godk.sso.cache.guava;
 
-import cn.godk.sso.cache.CacheManager;
 import cn.godk.sso.cache.Cache;
+import cn.godk.sso.cache.CacheManager;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import lombok.Getter;
@@ -51,7 +51,7 @@ public class GuavaCacheManager<T> implements CacheManager<T> {
 
     @Override
     public List<T> all() {
-        return (List<T>) guavaCache.getAllValue(guava,Object.class);
+        return (List<T>) guavaCache.getAllValue(guava, Object.class);
     }
 
     @Override

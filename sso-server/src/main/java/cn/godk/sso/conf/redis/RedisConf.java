@@ -16,16 +16,14 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.time.Duration;
 
 /**
+ * redis configuration
  *
- *  redis configuration
  * @author wt
  * @program project-sso
  * @create 2020-10-20  10:39
@@ -37,15 +35,15 @@ import java.time.Duration;
 @EnableConfigurationProperties(RedisConf.class)
 @PropertySource("classpath:application.yml")
 @ConfigurationProperties(prefix = "project.redis")
-public class RedisConf  extends Jedis{
+public class RedisConf extends Jedis {
     /**
-     *  连接池最大连接数（使用负值表示没有限制）
+     * 连接池最大连接数（使用负值表示没有限制）
      */
     private int redisPoolMaxActive = 15;
     /**
      * 连接池中的最大空闲连接
      */
-    private int redisPoolMaxWait =5000;
+    private int redisPoolMaxWait = 5000;
     /**
      * 连接池最大阻塞等待时间（使用负值表示没有限制）
      */
@@ -135,15 +133,13 @@ public class RedisConf  extends Jedis{
      *
      * @param redisTemplate
      */
-    public <T> void setSerializer(RedisTemplate<String,T> redisTemplate,RedisSerializer<?> key,RedisSerializer<?> val) {
+    public <T> void setSerializer(RedisTemplate<String, T> redisTemplate, RedisSerializer<?> key, RedisSerializer<?> val) {
         //设置键（key）的序列化方式  String
         redisTemplate.setKeySerializer(key);
         //设置值（value）的序列化方式
         redisTemplate.setValueSerializer(val);
         redisTemplate.afterPropertiesSet();
     }
-
-
 
 
 }

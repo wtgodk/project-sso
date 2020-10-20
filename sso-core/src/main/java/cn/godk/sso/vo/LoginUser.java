@@ -16,6 +16,15 @@ import java.util.Map;
 @Setter
 @Getter
 public class LoginUser {
+    /**
+     * 用户名
+     */
+    private String username;
+    /**
+     * 额外参数
+     */
+    private Map<String, Object> params = Maps.newHashMap();
+
     public LoginUser() {
     }
 
@@ -27,14 +36,4 @@ public class LoginUser {
     public LoginUser(String username) {
         this.username = username;
     }
-
-    /**
-     * 用户名
-     */
-    private String username;
-
-    /**
-     * 额外参数
-     */
-    private Map<String, Object> params = Maps.newHashMap();
 }

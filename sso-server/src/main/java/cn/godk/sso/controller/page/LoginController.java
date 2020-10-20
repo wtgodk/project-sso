@@ -2,8 +2,6 @@ package cn.godk.sso.controller.page;
 
 import cn.godk.sso.SsoLoginHelper;
 import cn.godk.sso.bean.Permit;
-import cn.godk.sso.conf.Constant;
-import cn.godk.sso.controller.base.BaseController;
 import cn.godk.sso.controller.base.PageBaseController;
 import cn.godk.sso.cookie.CookieUtils;
 import cn.godk.sso.exception.LoginFailException;
@@ -40,16 +38,16 @@ public class LoginController extends PageBaseController {
     public String login(@RequestParam(name = "backUrl", required = false) String backUrl, String appId, HttpServletRequest request, Model model) {
         log.info("[{}] load page : login ,param [backUrl]->[{}]", new Date(), backUrl);
         // 校验 是否已经登陆了
-        String token = CookieUtils.get(request, Constant.COOKIE_NAME);
+        String token = CookieUtils.get(request, getProjectConfig().getCookieName());
         Permit cookie = SsoLoginHelper.check(token, appId);
         if (cookie != null) {
             // 已经登陆了直接跳转到指定页面
-            return  success(backUrl,cookie);
+            return success(backUrl, cookie);
         }
         model.addAttribute("backUrl", backUrl);
         model.addAttribute("appId", appId);
         model.addAttribute("msg", request.getParameter("msg"));
-    //    ?backUrl=" + backUrl + "&appId=" + appId
+        //    ?backUrl=" + backUrl + "&appId=" + appId
         return "/login";
     }
 
@@ -69,14 +67,14 @@ public class LoginController extends PageBaseController {
                         @RequestParam(name = "rememberMe", defaultValue = "0") int rememberMe,
                         @RequestParam(name = "backUrl", required = false) String backUrl, HttpServletResponse response) {
         log.info("[{}] load page : login check ,param [username,password,appId,rememberMe,backUrl]->[{},{},{},{},{}]", new Date(), username, password, appId, rememberMe, backUrl);
-       try{
-           Permit permit = SsoLoginHelper.login(appId, username, password, Permit.Type.cookie);
-           CookieUtils.set(response, Constant.COOKIE_NAME, permit.getKey(), rememberMe == 1);
-           return  success(backUrl,permit);
-       }catch (LoginFailException e){
-           // 登录失败 ，验证不通过
-           return "redirect:/login.html?backUrl=" + backUrl +"&msg=" + e.getMessage();
-       }
+        try {
+            Permit permit = SsoLoginHelper.login(appId, username, password, Permit.Type.cookie);
+            CookieUtils.set(response, getProjectConfig().getCookieName(), permit.getKey(), rememberMe == 1);
+            return success(backUrl, permit);
+        } catch (LoginFailException e) {
+            // 登录失败 ，验证不通过
+            return "redirect:/login.html?backUrl=" + backUrl + "&msg=" + e.getMessage();
+        }
     }
 
 
@@ -95,9 +93,9 @@ public class LoginController extends PageBaseController {
                          HttpServletRequest request,
                          HttpServletResponse response) {
         log.info("[{}] load page : logout ,param [appId,backUrl]->[{},{}]", new Date(), appId, backUrl);
-        String cookie = CookieUtils.get(request, Constant.COOKIE_NAME);
-        SsoLoginHelper.logout(cookie,appId);
-        CookieUtils.destroy(request, response, Constant.COOKIE_NAME);
+        String cookie = CookieUtils.get(request, getProjectConfig().getCookieName());
+        SsoLoginHelper.logout(cookie, appId);
+        CookieUtils.destroy(request, response, getProjectConfig().getCookieName());
         return "redirect:/login.html?backUrl=" + backUrl + "&appId=" + appId;
     }
 
