@@ -41,7 +41,8 @@ public abstract class LogoutHelper {
     }
 
     /**
-     *   token 登录 退出
+     * token 登录 退出
+     *
      * @param request
      */
     public static void logout(HttpServletRequest request) {

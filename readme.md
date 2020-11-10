@@ -28,7 +28,7 @@
 ## 前端技术
 
     技术 | 名称 | 官网
-    --|--|--
+    ---|---|---
     jQuery | 函式库  | [http://jquery.com/](http://jquery.com/)
     
 # 进度：

@@ -2,7 +2,6 @@ package cn.godk.sso.controller.rest;
 
 import cn.godk.sso.bean.result.Result;
 import cn.godk.sso.controller.base.BaseController;
-import cn.godk.sso.handler.VerificationHandler;
 import cn.godk.sso.manager.service.Service;
 import cn.godk.sso.manager.service.ServiceManager;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +28,6 @@ public class ServiceController extends BaseController {
     @Resource
     private ServiceManager serviceManager;
 
-    /**
-     * cookie token key生成 handler
-     */
-    @Resource
-    private VerificationHandler verificationHandler;
 
     /**
      * simple service manager query all service
