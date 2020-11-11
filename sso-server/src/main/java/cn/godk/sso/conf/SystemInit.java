@@ -28,7 +28,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 系统初始化
+ * system init ， Loading required class , Injected into spring container
  *
  * @author wt
  * @program project-sso

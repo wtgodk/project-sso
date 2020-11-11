@@ -17,13 +17,15 @@
             // sso-server服务登出地址
             initParameters.put("ssoLogoutUrl",logoutPath);
             // sso-server服务登陆地址
-            initParameters.put(ssoLoginUrlKey, ssoLoginUrl);
+            initParameters.put("ssoLoginUrl", ssoLoginUrl);
             // 客户端 ID
             initParameters.put("appId", appId);
             // 客户端服务地址
             initParameters.put("ssoClientUrl", ssoClientUrl);
             // 排除路径（不受登录控制的路径）
             initParameters.put("excludedPaths", "/index,/main");
+            
+            
             authenticationFilter.setInitParameters(initParameters);
             authenticationFilter.setOrder(0);
             return authenticationFilter;

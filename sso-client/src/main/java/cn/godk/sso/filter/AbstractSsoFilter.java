@@ -48,11 +48,11 @@ public abstract class AbstractSsoFilter extends HttpServlet implements Filter {
     /**
      * 登陆页面地址
      */
-    private String ssoLoginUrlKey = "ssoLoginUrlKey";
+    private String ssoLoginUrlKey = "ssoLoginUrl";
     /**
      * 获取客户端 地址
      */
-    private String ssoClientUrlKey = "ssoClientUrlKey";
+    private String ssoClientUrlKey = "ssoClientUrl";
 
 
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
